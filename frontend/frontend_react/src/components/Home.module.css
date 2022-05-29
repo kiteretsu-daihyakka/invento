@@ -1,0 +1,9 @@
+.nav{
+    border: 1px black solidx;
+    background-color: blueviolet;
+    color: white;
+}
+
+.nav a{
+    color: black;
+}

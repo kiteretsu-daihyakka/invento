@@ -1,0 +1,23 @@
+.products {
+    margin: 2rem auto;
+    width: 90%;
+    max-width: 40rem;
+}
+
+.products ul {
+    list-style: none;
+    padding: 1rem;
+}
+
+.products li {
+    border: 1px solid #ccc;
+    margin: 0.5rem 0;
+    padding: 0.5rem;
+}
+@media (max-width: 580px) {
+    .products {
+        margin: 0%;
+        width: 100%;
+        max-width:none;
+    }
+}
