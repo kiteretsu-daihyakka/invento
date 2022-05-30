@@ -13,6 +13,11 @@
             var csrfToken = ''
         </script> -->
         {% csrf_token %}
+        <script>
+            const checkLoginUrl = "{% url ':checkLogin' %}";
+            const signupUrl = "{% url ':signup' %}";
+            const loginUrl = "{% url ':login' %}";
+        </script>
         <script src="{% static 'frontend/main.js' %}?{% now 'U' %}"></script>
     </body>
 </html>
