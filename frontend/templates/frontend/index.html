@@ -14,9 +14,12 @@
         </script> -->
         {% csrf_token %}
         <script>
-            const checkLoginUrl = "{% url ':checkLogin' %}";
-            const signupUrl = "{% url ':signup' %}";
-            const loginUrl = "{% url ':login' %}";
+            const checkLoginUrl = "{% url 'auths:check-login' %}";
+            const signupUrl = "{% url 'auths:signup' %}";
+            const loginUrl = "{% url 'auths:login' %}";
+            //category urls
+            const categories_url = "{% url 'categories:categories' %}";
+            const products_url = "{% url 'products:products' %}";
         </script>
         <script src="{% static 'frontend/main.js' %}?{% now 'U' %}"></script>
     </body>

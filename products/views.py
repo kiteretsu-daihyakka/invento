@@ -1,13 +1,11 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Product, Category
-from .serializers import ProductSerializer, CategorySerializer
+from .models import Product
+from .serializers import ProductSerializer
 from rest_framework.response import Response
 from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP_204_NO_CONTENT
 from rest_framework.decorators import api_view
 
-def index(request):
-    return render(request,'frontend/index.html')
 @api_view(['GET','POST'])
 def product_list(request):
     if request.method == 'GET':
@@ -45,20 +43,3 @@ def product_detail(request,pk):
     elif request.method == 'DELETE':
         product.delete()
         return Response(status=HTTP_204_NO_CONTENT)
-    
-@api_view(['GET','POST'])
-def category_list(request):
-    if request.method == 'GET':
-        categories = Category.objects.all().order_by('-id')
-        print(categories)
-        serializer = CategorySerializer(categories,many=True)
-        print(serializer.data)
-        return Response(serializer.data)
-    
-    elif request.method == 'POST':
-        serializer = CategorySerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data,status=HTTP_201_CREATED)
-        else:
-            return Response(serializer.errors,status=HTTP_400_BAD_REQUEST)

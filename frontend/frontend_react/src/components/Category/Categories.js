@@ -12,7 +12,6 @@ const Categories = () => {
   const [categories, setCategories] = useState([]);
   let _data;
   let [isLoading, setIsLoading] = useState(false);
-  const categories_url = "http://127.0.0.1:8000/categories/api/";
 
   useEffect(() => {
     // let mounted = true;

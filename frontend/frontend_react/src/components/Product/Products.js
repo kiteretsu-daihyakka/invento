@@ -13,7 +13,7 @@ const Products = () => {
   const [products, setProducts] = useState([]);
   let _data;
   let [isLoading, setIsLoading] = useState(false);
-  const products_url = "http://127.0.0.1:8000/products/api/";
+
   useEffect(() => {
     let mounted = true;
     fetchProductsHandler();
