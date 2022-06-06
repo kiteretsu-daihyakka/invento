@@ -23,7 +23,7 @@
             //category urls
             const categories_url = "{% url 'categories:categories' %}";
             const products_url = "{% url 'products:products' %}";
-            const csrfToken = '{% csrf_token %}';
+            const csrfToken = '{{ csrf_token }}';
         </script>
         <script src="{% static 'frontend/main.js' %}?{% now 'U' %}"></script>
     </body>
