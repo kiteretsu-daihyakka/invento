@@ -7,6 +7,7 @@ import Button from "../UI/Button";
 import classes from "./Products.module.css";
 import btnClasses from "../UI/Button.module.css";
 import Modal from "../UI/Modal";
+import NoRecords from "../Helpers/NoRecords";
 
 const Products = () => {
   const [showAddProduct, setShowAddProduct] = useState(false);
@@ -29,8 +30,7 @@ const Products = () => {
       body: JSON.stringify(_data),
       headers: {
         "Content-type": "application/json; charset=UTF-8",
-        "X-CSRFToken": document.getElementsByName("csrfmiddlewaretoken")[0]
-          .value,
+        "X-CSRFToken": csrfToken,
       },
     })
       .then((response) => response.json())
@@ -104,32 +104,41 @@ const Products = () => {
       {/* <Button onClick={fetchProductsHandler}>Fetch Products</Button> */}
       {showAddProduct == true && (
         <Modal onClose={onCloseAddProductModal}>
-          <AddProduct onAdd={addProductHandler} onClose={onCloseAddProductModal}/>
+          <AddProduct
+            onAdd={addProductHandler}
+            onClose={onCloseAddProductModal}
+          />
         </Modal>
       )}
 
-      <Card className={classes.products}>
+      <div className={classes.products}>
         {showAddProduct == false && (
-          <Button className={btnClasses.alignRight} onClick={addProductButtonHandler} >Add New Product</Button>
+          <div className={btnClasses.alignRight}>
+            <Button onClick={addProductButtonHandler}>Add New Product</Button>
+          </div>
         )}
-        {isLoading == true && (
+        {isLoading == true ? (
           <ul>
             <li>
               <h3>Loading...</h3>
             </li>
           </ul>
+        ):products.length > 0 ? (
+          <ul>
+            {products.map((productData) => (
+              <Product
+                key={Math.random().toString()}
+                name={productData.name}
+                price={productData.price}
+                category={productData.category}
+              />
+            ))}
+          </ul>
+        ) : (
+          <NoRecords entityName="Products" />
         )}
-        <ul>
-          {products.map((productData) => (
-            <Product
-              key={Math.random().toString()}
-              name={productData.name}
-              price={productData.price}
-              category={productData.category}
-            />
-          ))}
-        </ul>
-      </Card>
+        
+      </div>
     </>
   );
 };

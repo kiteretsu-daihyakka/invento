@@ -17,7 +17,7 @@ const Actions = () => {
         <TitleBig>Let's Get Started!</TitleBig>
         <div className={btnClasses.btnGroup}>
             <Button onClick={loginRedirect}>Login</Button>
-            &nbsp;
+            <span className={btnClasses.or}>&nbsp;Or&nbsp;</span>
             <Button onClick={signUpRedirect}>SignUp</Button>
         </div>
     </React.Fragment>

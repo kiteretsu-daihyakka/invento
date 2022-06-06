@@ -6,6 +6,8 @@ import Button from "../UI/Button";
 import AddCategory from "./AddCategory";
 import Category from "./Category";
 import styles from "./Categories.module.css";
+import NoRecords from "../Helpers/NoRecords";
+import btnClasses from "../UI/Button.module.css";
 
 const Categories = () => {
   const [showAddCategory, setShowAddCategory] = useState(false);
@@ -46,8 +48,7 @@ const Categories = () => {
       body: JSON.stringify(_data),
       headers: {
         "Content-type": "application/json; charset=UTF-8",
-        "X-CSRFToken": document.getElementsByName("csrfmiddlewaretoken")[0]
-          .value,
+        "X-CSRFToken": csrfToken,
       },
     })
       .then((response) => response.json)
@@ -77,28 +78,35 @@ const Categories = () => {
           <AddCategory onAdd={onAddHandler} onClose={onCloseAddCategoryModal} />
         </Modal>
       )}
-      
-      <Card className={styles.categories}>
+
+      <div className={styles.categories}>
         {showAddCategory == false && (
-          <Button onClick={addCategoryButtonHandler}>Add New Category</Button>
+          <div className={btnClasses.alignRight}>
+            <Button onClick={addCategoryButtonHandler}>Add New Category</Button>
+          </div>
         )}
-        {isLoading == true && (
+        {isLoading == true ? (
           <ul>
             <li>
               <h3>Loading...</h3>
             </li>
           </ul>
+        ) : categories.length > 0 ? (
+          <Card>
+            <ul>
+              {categories.map((categoryData) => (
+                <Category
+                  key={categoryData.id}
+                  id={categoryData.id}
+                  categoryName={categoryData.name}
+                />
+              ))}
+            </ul>
+          </Card>
+        ) : (
+          <NoRecords entityName="Categories" />
         )}
-        <ul>
-          {categories.map((categoryData) => (
-            <Category
-              key={categoryData.id}
-              id={categoryData.id}
-              categoryName={categoryData.name}
-            />
-          ))}
-        </ul>
-      </Card>
+      </div>
     </>
   );
 };

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
 
@@ -9,18 +9,25 @@ import Categories from "./components/Category/Categories";
 import CheckLogin from "./components/Auth/CheckLogin";
 import Login from "./components/Auth/Login";
 import SignUp from "./components/Auth/SignUp";
+import NotFound from './components/Helpers/NotFound'
+
 
 function App() {
+  const [loginStatus, setLoggedInStatus] = useState(false);
+  function onLoginCheck(result) {
+    setLoggedInStatus(result)
+  }
   return (
     <React.Fragment>
-      <MainHeader />
+      {loginStatus == true && <MainHeader />}
       <Routes>
-        <Route path="" element={<CheckLogin />} />
+        <Route path="" element={<CheckLogin onCheck={onLoginCheck}/>} />
         <Route path="login" element={<Login />} />
-        <Route path="signup" element={<SignUp />} />
+        <Route path="signup" element={<SignUp onSuccessfullSignedIn={onLoginCheck}/>} />
         <Route path="home" element={<Home />} />
         <Route path="products" excat element={<Products />} />
         <Route path="categories" excat element={<Categories />} />
+        <Route path="*" element={<NotFound/>} />
       </Routes>
     </React.Fragment>
   );

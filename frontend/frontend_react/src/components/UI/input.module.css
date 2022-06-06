@@ -25,3 +25,10 @@
     outline: none;
     border-color: #4f005f;
 }
+@media (max-width: 580px) {
+    .input {
+        margin: 0%;
+        width: 100%;
+        max-width: none;
+    }
+}

@@ -2,6 +2,9 @@
 <html>
     <head>
         <title>Invento</title>
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE-edge"/>
+        <meta name="viewport" content='width=device-width, initial-scale=1'/>
     </head>
     <body>
         <div id="root">
@@ -12,7 +15,7 @@
         <!-- <script>
             var csrfToken = ''
         </script> -->
-        {% csrf_token %}
+        
         <script>
             const checkLoginUrl = "{% url 'auths:check-login' %}";
             const signupUrl = "{% url 'auths:signup' %}";
@@ -20,6 +23,7 @@
             //category urls
             const categories_url = "{% url 'categories:categories' %}";
             const products_url = "{% url 'products:products' %}";
+            const csrfToken = '{% csrf_token %}';
         </script>
         <script src="{% static 'frontend/main.js' %}?{% now 'U' %}"></script>
     </body>

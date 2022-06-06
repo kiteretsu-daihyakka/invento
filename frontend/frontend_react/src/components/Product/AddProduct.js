@@ -2,7 +2,7 @@ import React from 'react';
 import Button from "../UI/Button";
 import Card from "../UI/Card";
 import Modal from "../UI/Modal";
-import classes from './AddProduct.module.css'
+import classes from '../UI/input.module.css'
 import btnClasses from '../UI/Button.module.css'
 import { useState } from "react";
 // import addProductAPI from './apis.js'
@@ -37,7 +37,7 @@ const AddProduct = (props) => {
       props.onClose()
     }
   return (
-    <Card className={classes.input}>
+    <div className={classes.input}>
       <form onSubmit={submitHandler}>
         <label htmlFor="name">Enter Product Name</label>
         <input type="text" id="name" value={name} onChange={nameChangeHandler}/>
@@ -45,10 +45,12 @@ const AddProduct = (props) => {
         <input type="number" id="price" value={price} onChange={priceChangeHandler}/>
         <label htmlFor="category">Select Category</label>
         <input type="category" id="category" value={category} onChange={categoryChangeHandler}/>
-        <Button type="submit">Add Product</Button>
-        <Button type="button" onClick={onCloseHandler} className={btnClasses.paddingLeft}>Close</Button>
+        <div className={btnClasses.btnGroup}>
+          <Button type="submit">Add Product</Button>
+          <Button type="button" onClick={onCloseHandler} className={btnClasses.paddingLeft}>Close</Button>
+        </div>
       </form>
-    </Card>
+    </div>
   );
 };
 export default AddProduct;

@@ -23,8 +23,16 @@
 
 @media (max-width: 580px) {
     .button {
-        width: 90%;
-        margin-left: 5%;
-        height: 80px;
+        /* width: 90%; */
+        /* margin-left: 5%; */
+        /* height: 80px; */
     }
 }
+
+.btnGroup{
+    text-align: center;
+    color: white;
+}
+@media (max-width: 580px){.or{
+    width:100%;
+}}

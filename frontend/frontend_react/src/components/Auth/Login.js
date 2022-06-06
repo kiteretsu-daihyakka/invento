@@ -1,6 +1,7 @@
 import React, {useRef} from "react";
 import Button from "../UI/Button";
 import classes from "./Login.module.css";
+import inptCls from "../UI/input.module.css";
 import btnClasses from "../UI/Button.module.css";
 import {useNavigate} from "react-router-dom";
 import TitleMedium from "../UI/Titles/TitleMedium";
@@ -35,11 +36,11 @@ const Login = (props) => {
         }
     }
 
-    return <Card className={classes.input}>
+    return <Card className={inptCls.input}>
         {/* <TitleMedium>Login</TitleMedium> */}
         <form onSubmit={onSubmitHandler}>
             <label>Enter Username</label>
-            <input type='text' ref={uname}/>
+            <input type='text' ref={usrnm}/>
             <label>Enter Password</label>
             <input type='password' ref={pswd}/>
             <Button>Login</Button>
