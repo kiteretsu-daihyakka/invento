@@ -19,12 +19,12 @@ function App() {
   }
   return (
     <React.Fragment>
-      {loginStatus == true && <MainHeader />}
+      {/* {loginStatus == true && <MainHeader />} */}
       <Routes>
         <Route path="" element={<CheckLogin onCheck={onLoginCheck}/>} />
-        <Route path="login" element={<Login />} />
+        <Route path="login" element={<Login onSuccessfullLogin={onLoginCheck}/>} />
         <Route path="signup" element={<SignUp onSuccessfullSignedIn={onLoginCheck}/>} />
-        <Route path="home" element={<Home />} />
+        <Route path="home" element={<Home loginStatus={loginStatus}/>} />
         <Route path="products" excat element={<Products />} />
         <Route path="categories" excat element={<Categories />} />
         <Route path="*" element={<NotFound/>} />

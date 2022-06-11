@@ -2,14 +2,20 @@ from django.shortcuts import render
 from rest_framework.response import Response
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
-from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_401_UNAUTHORIZED, HTTP_404_NOT_FOUND, HTTP_204_NO_CONTENT
+from rest_framework.status import HTTP_200_OK,HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_401_UNAUTHORIZED, HTTP_404_NOT_FOUND, HTTP_204_NO_CONTENT
 from categories.models import Business
 from categories.serializers import BusinessSerializer
 from django.contrib.auth import authenticate, login, logout
 
 # Create your views here.
+@api_view(['POST'])
 def do_login(request):
-    pass
+    print('request data: ', request.data)
+    if try_login(request,request.data['username'],request.data['password']):
+        return Response(status=HTTP_200_OK)
+    else:
+        print('login returned false')
+        return Response(status=HTTP_401_UNAUTHORIZED)
 
 @api_view(['POST'])
 def do_signup(request):

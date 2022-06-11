@@ -6,9 +6,10 @@ import btnClasses from "../UI/Button.module.css";
 import {useNavigate} from "react-router-dom";
 import TitleMedium from "../UI/Titles/TitleMedium";
 import Card from "../UI/Card"
-
+import axios from "axios";
 
 const Login = (props) => {
+    const navigate = useNavigate();
     const usrnm = useRef();
     const pswd = useRef();
     async function onSubmitHandler(e) {
@@ -17,21 +18,16 @@ const Login = (props) => {
         let pass = pswd.current.value;
         if (uname.trim().length > 0 && pass.trim().length > 0){
             let creds = {'username':uname, 'password':pass}
-            let response = await fetch(loginUrl, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFTOKEN': csrfToken
-                },
-                body: JSON.stringify(creds)
-            });
-            const data = await response.json();
-            console.log('data: ',data);
-            if(data.status == 200){
+            const headers = {"Content-Type": 'application/json',"X-CSRFTOKEN": csrfToken}
+            let response = await axios.post(loginUrl,creds,{headers});
+            console.log('response: ',response);
+            if(response.status == 200){
                 console.log('user logged in!');
-                props.onSuccessfullLogin();
+                props.onSuccessfullLogin(true);
+                navigate('/categories');
             }else{
                 console.log('user could not logged in, some error occured..');
+                props.onSuccessfullLogin(false);
             }
         }
     }

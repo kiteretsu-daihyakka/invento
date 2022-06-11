@@ -8,6 +8,7 @@ import classes from "./Products.module.css";
 import btnClasses from "../UI/Button.module.css";
 import Modal from "../UI/Modal";
 import NoRecords from "../Helpers/NoRecords";
+import MainHeader from "../Header/MainHeader";
 
 const Products = () => {
   const [showAddProduct, setShowAddProduct] = useState(false);
@@ -100,6 +101,7 @@ const Products = () => {
   }
   return (
     <>
+    <MainHeader/>
       {/* <h2>Products</h2> */}
       {/* <Button onClick={fetchProductsHandler}>Fetch Products</Button> */}
       {showAddProduct == true && (

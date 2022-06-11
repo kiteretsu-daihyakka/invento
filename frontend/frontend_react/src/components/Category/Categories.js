@@ -8,6 +8,8 @@ import Category from "./Category";
 import styles from "./Categories.module.css";
 import NoRecords from "../Helpers/NoRecords";
 import btnClasses from "../UI/Button.module.css";
+import axios from "axios";
+import MainHeader from "../Header/MainHeader";
 
 const Categories = () => {
   const [showAddCategory, setShowAddCategory] = useState(false);
@@ -42,18 +44,20 @@ const Categories = () => {
         setCategories(data);
       });
   }
-  function insertCategory() {
-    fetch(categories_url, {
-      method: "POST",
-      body: JSON.stringify(_data),
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-        "X-CSRFToken": csrfToken,
-      },
-    })
-      .then((response) => response.json)
-      .then((data) => console.log(data))
-      .then((err) => console.log(err));
+  async function insertCategory() {
+    const headers = {
+      "Content-type": "application/json; charset=UTF-8",
+      "X-CSRFToken": csrfToken,
+    }
+    let response = await axios.post(categories_url,_data, {headers});
+    if (response.data === 200){
+      console.log('category added successfully!');
+      console.log("insert true");
+      setShowAddCategory(false);
+    }else{
+      console.log('failed to create new category..');
+      return false;
+    }
   }
   function onAddHandler(newCategory) {
     setCategories((prevState) => {
@@ -72,6 +76,7 @@ const Categories = () => {
   }
   return (
     <>
+      <MainHeader/>
       {/* <h1>Categories</h1> */}
       {showAddCategory == true && (
         <Modal onClose={onCloseAddCategoryModal}>

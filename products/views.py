@@ -3,9 +3,23 @@ from django.http import HttpResponse
 from .models import Product
 from .serializers import ProductSerializer
 from rest_framework.response import Response
-from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP_204_NO_CONTENT
+from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP_204_NO_CONTENT
 from rest_framework.decorators import api_view
+from rest_framework import generics
 
+class ProductList(generics.ListCreateAPIView):
+    queryset = Product.objects.all().order_by('-id')
+    serializer_class = ProductSerializer
+    
+    def create(self, request, *args, **kwargs):
+        print('logged in user:', request.user)
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(HTTP_200_OK)
+        else:
+            print('errors:', serializer.errors)
+            
 @api_view(['GET','POST'])
 def product_list(request):
     if request.method == 'GET':

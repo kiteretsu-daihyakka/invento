@@ -4,9 +4,9 @@ import classes from './AboutUs.module.css'
 
 const AboutUs = () =>{
     return <Card className={classes.quoteCard}>
-        <p className={classes.quote}>
-            Welcome to Invento,<br/><br/>An Inventory Management site that aims to manage your products and categories.
-        </p>
+        <div className={classes.quote}>
+            Welcome to Invento,<br/>An Inventory Management site that aims to manage your products and categories.
+        </div>
     </Card>
 }
 
