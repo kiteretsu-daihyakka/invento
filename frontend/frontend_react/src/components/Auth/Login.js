@@ -24,7 +24,7 @@ const Login = (props) => {
             if(response.status == 200){
                 console.log('user logged in!');
                 props.onSuccessfullLogin(true);
-                navigate('/categories');
+                navigate(props.dest);
             }else{
                 console.log('user could not logged in, some error occured..');
                 props.onSuccessfullLogin(false);

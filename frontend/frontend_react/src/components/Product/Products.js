@@ -101,7 +101,7 @@ const Products = () => {
   }
   return (
     <>
-    <MainHeader/>
+    {/* <MainHeader/> */}
       {/* <h2>Products</h2> */}
       {/* <Button onClick={fetchProductsHandler}>Fetch Products</Button> */}
       {showAddProduct == true && (

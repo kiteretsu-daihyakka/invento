@@ -8,18 +8,18 @@ const CheckLogin = (props) => {
     const fetchLoginStatus = useCallback(async () => {
         try {
             const response = await axios(checkLoginUrl);
-            const data = await response.json();
+            const data = await response;
             console.log('data: ',data);
             if(data.status == 200){
                 console.log('user already logged in!');
                 props.onCheck(true);
-                navigate("/add/employee");
+                navigate(props.dest);
             }
         } catch (error) {
             if(error.response.status == 401){
                 console.log('user not logged in!');
                 props.onCheck(false);
-                navigate("/home");
+                navigate("/home/");
             }else{
                 console.log('something went wrong, please try again.');
             }

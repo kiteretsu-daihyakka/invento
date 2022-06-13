@@ -32,7 +32,10 @@
     text-decoration: none;
 }
 
-.header a:hover,
+.header a:hover{
+    color: #95bcf0;
+    padding-bottom: 0.25rem;
+}
 .header a:active,
 .header a.active {
     color: #95bcf0;

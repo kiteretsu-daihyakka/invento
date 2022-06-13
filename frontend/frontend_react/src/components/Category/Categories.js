@@ -76,7 +76,7 @@ const Categories = () => {
   }
   return (
     <>
-      <MainHeader/>
+      {/* <MainHeader/> */}
       {/* <h1>Categories</h1> */}
       {showAddCategory == true && (
         <Modal onClose={onCloseAddCategoryModal}>

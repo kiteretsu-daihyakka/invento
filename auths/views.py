@@ -43,7 +43,7 @@ def check_login(request):
         try:
             user = Business.objects.get(id=request.user.id)
             if try_login(request,user.username,user.password):
-                return Response({'businessName':user.owner,'username':user.username},status=HTTP_200_OK)
+                return Response({'businessName':user.name,'username':user.username},status=HTTP_200_OK)
             else:
                 return Response({'error':'Invalid Username or Password.'})        
         except Business.DoesNotExist:

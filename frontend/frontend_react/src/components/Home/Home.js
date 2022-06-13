@@ -7,7 +7,7 @@ import MainHeader from '../Header/MainHeader';
 
 const Home = (props) => {
   return <React.Fragment>
-    <MainHeader/>
+    {/* <MainHeader/> */}
     {/* <Logo/> */}
     <AboutUs/>
     {props.loginStatus === false && <Actions/>}

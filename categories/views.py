@@ -31,8 +31,14 @@ def category_detail(request,pk):
         return Response(status=HTTP_204_NO_CONTENT)
             
 class CategoryList(generics.ListCreateAPIView):
-    queryset = Category.objects.all().order_by('-id')
+    # queryset = Category.objects.filter(owner__id=request.user.id).order_by('-id')
     serializer_class = CategorySerializer
+    
+    def list(self, request):
+        print('logged in user:', request.user)
+        queryset = Category.objects.filter(owner__id=request.user.id).order_by('-id')
+        serializer = CategorySerializer(queryset, many=True)
+        return Response(serializer.data)
     
     def create(self, request, *args, **kwargs):
         print('logged in user:', request.user)
@@ -44,19 +50,19 @@ class CategoryList(generics.ListCreateAPIView):
         else:
             print('errors:', serializer.errors)
 
-@api_view(['GET','POST'])
-def category_list(request):
-    if request.method == 'GET':
-        categories = Category.objects.all().order_by('-id')
-        print(categories)
-        serializer = CategorySerializer(categories,many=True)
-        print(serializer.data)
-        return Response(serializer.data)
+# @api_view(['GET','POST'])
+# def category_list(request):
+#     if request.method == 'GET':
+#         categories = Category.objects.filter(owner__id=request.user.id).order_by('-id')
+#         print(categories)
+#         serializer = CategorySerializer(categories,many=True)
+#         print(serializer.data)
+#         return Response(serializer.data)
     
-    elif request.method == 'POST':
-        serializer = CategorySerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data,status=HTTP_201_CREATED)
-        else:
-            return Response(serializer.errors,status=HTTP_400_BAD_REQUEST)
+#     elif request.method == 'POST':
+#         serializer = CategorySerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data,status=HTTP_201_CREATED)
+#         else:
+#             return Response(serializer.errors,status=HTTP_400_BAD_REQUEST)
