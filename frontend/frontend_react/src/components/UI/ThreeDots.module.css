@@ -1,0 +1,29 @@
+.threeDotMenuModal {
+  color: white;
+  background-color: transparent;
+  width: auto; 
+}
+
+.threeDotMenu ul{
+  margin-top: 30%;
+  background-color: #4f005f;
+  border-radius: 10px;
+}
+
+.threeDotMenu::before {
+  /* background-color: #4f005f; */
+  content: "";
+  position: absolute;
+  /* top: 100%; */
+  /* left: 10%; */
+  margin-left: 50%;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent #4f005f transparent;
+  /* border-color: red red red red; */
+  /* padding: 0%; */
+  /* background-color: #4f005f; */
+  top: 12%;
+}
+.popuptextli {
+}

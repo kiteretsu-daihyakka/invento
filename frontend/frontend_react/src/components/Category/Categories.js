@@ -10,8 +10,9 @@ import NoRecords from "../Helpers/NoRecords";
 import btnClasses from "../UI/Button.module.css";
 import axios from "axios";
 import MainHeader from "../Header/MainHeader";
+import CheckLogin from "../Auth/CheckLogin";
 
-const Categories = () => {
+const Categories = (props) => {
   const [showAddCategory, setShowAddCategory] = useState(false);
   const [categories, setCategories] = useState([]);
   let _data;
@@ -25,7 +26,16 @@ const Categories = () => {
 
   function fetchCategories() {
     setIsLoading(true);
-    fetch(categories_url)
+    // const headers = {
+    //   "Content-type": "application/json; charset=UTF-8",
+    //   "Authorization": props.token,
+    // }
+    fetch(categories_url, {
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+        "Authorization": "Token "+localStorage.getItem('nekota'),
+      },
+    })
       .then((response) => {
         console.log("response>>", response);
         setIsLoading(false);
@@ -47,29 +57,36 @@ const Categories = () => {
   async function insertCategory() {
     const headers = {
       "Content-type": "application/json; charset=UTF-8",
-      "X-CSRFToken": csrfToken,
-    }
-    let response = await axios.post(categories_url,_data, {headers});
-    if (response.data === 200){
-      console.log('category added successfully!');
-      console.log("insert true");
+      "Authorization": "Token "+localStorage.getItem('nekota'),
+    };
+    let response = await axios.post(categories_url, _data, { headers });
+    console.log('res ',response);
+    if (response.status === 201) {
       setShowAddCategory(false);
-    }else{
-      console.log('failed to create new category..');
+      console.log("category added successfully!");
+      _data['id'] = response.data['id'];
+    } else {
+      console.log("failed to create new category..");
       return false;
     }
   }
-  function onAddHandler(newCategory) {
+  function onAddHandler(newCategoryName) {
+    _data = {
+      name: newCategoryName,
+    };
+    insertCategory();
     setCategories((prevState) => {
-      _data = {
-        name: newCategory.name,
-      };
-      insertCategory();
-      return [newCategory, ...prevState];
+      return [_data, ...prevState];
     });
   }
   function addCategoryButtonHandler() {
     setShowAddCategory(true);
+  }
+  function deleteHandler(id,name) {
+    setCategories((prevState) => {
+      return prevState.filter(cat => cat.id.toString() !== id);
+    });
+    console.log(name+" category deleted.");
   }
   function onCloseAddCategoryModal() {
     setShowAddCategory(false);
@@ -101,9 +118,12 @@ const Categories = () => {
             <ul>
               {categories.map((categoryData) => (
                 <Category
-                  key={categoryData.id}
                   id={categoryData.id}
+                  key={categoryData.id}
                   categoryName={categoryData.name}
+                  className={styles.category}
+                  onDelete={deleteHandler}
+                  token={props.token}
                 />
               ))}
             </ul>

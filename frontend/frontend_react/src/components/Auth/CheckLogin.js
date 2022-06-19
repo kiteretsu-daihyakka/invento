@@ -8,6 +8,7 @@ const CheckLogin = (props) => {
     const fetchLoginStatus = useCallback(async () => {
         try {
             const response = await axios(checkLoginUrl);
+            // const response = await axios(get_token);
             const data = await response;
             console.log('data: ',data);
             if(data.status == 200){

@@ -18,16 +18,16 @@ const Login = (props) => {
         let pass = pswd.current.value;
         if (uname.trim().length > 0 && pass.trim().length > 0){
             let creds = {'username':uname, 'password':pass}
-            const headers = {"Content-Type": 'application/json',"X-CSRFTOKEN": csrfToken}
-            let response = await axios.post(loginUrl,creds,{headers});
-            console.log('response: ',response);
+            const headers = {"Content-Type": 'application/json'}
+            // let response = await axios.post(loginUrl,creds,{headers});
+            let response = await axios.post(anotherLoginUrl,creds,{headers});
+            console.log('response after login: ',response);
+            // console.log('token after login: ',response.data.token);
             if(response.status == 200){
                 console.log('user logged in!');
-                props.onSuccessfullLogin(true);
-                navigate(props.dest);
+                props.onSuccessfullLogin(true,response.data.token);
             }else{
                 console.log('user could not logged in, some error occured..');
-                props.onSuccessfullLogin(false);
             }
         }
     }

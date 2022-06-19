@@ -8,8 +8,8 @@ const Modal = (props) => {
     }
   return (
     <>
-      <div className={classes.backdrop} onClick={onBackdropClickHandler}></div>
-      <Card className={classes.modal}>{props.children}</Card>
+      <div className={`${classes.backdrop} ${props.backDropclass}`} onClick={onBackdropClickHandler}></div>
+      <Card className={`${classes.modal} ${props.className}`}>{props.children}</Card>
     </>
   );
 };

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import { Route, Routes, useNavigate } from "react-router-dom";
 
@@ -9,47 +9,70 @@ import Categories from "./components/Category/Categories";
 import CheckLogin from "./components/Auth/CheckLogin";
 import Login from "./components/Auth/Login";
 import SignUp from "./components/Auth/SignUp";
-import NotFound from './components/Helpers/NotFound'
-
+import NotFound from "./components/Helpers/NotFound";
 
 function App() {
   let navigate = useNavigate();
-  const [present,setPresent] = useState("/categories/");
+  const [present, setPresent] = useState("/categories/");
+  const [loginStatus, setLoggedInStatus] = useState(
+    localStorage.getItem("logStat") === "true"
+  );
+  const [authToken, setAuthToken] = useState(localStorage.getItem("nekota"));
 
-  // console.log('present: ',present);
-
-  const [loginStatus, setLoggedInStatus] = useState(false);
-  function onLoginCheck(result) {
-    setLoggedInStatus(result)
+  function onLoginCheck(result, token) {
+    setLoggedInStatus(result);
+    setAuthToken(token);
+    if (result == true) {
+      setTimeout(() => {
+        navigate(present);
+      }, 3000);
+    }
   }
   useEffect(() => {
-    // navigate("/categories/");
-    let baseUrl = "http://127.0.0.1:8000"
-    let endOfBaseUrl = baseUrl.length;
-    
-    if ((window.location.href).length > 23){
-      setPresent((window.location.href).slice(endOfBaseUrl));
-    }
-    navigate("");
-    // let mounted = true;
-    // console.log('app rendering..  ',<CheckLogin onCheck={onLoginCheck}/>);
-    // <CheckLogin onCheck={onLoginCheck}/>
-    // return () => (mounted = false);
-  }, []);
+    localStorage.setItem("logStat", loginStatus);
+    localStorage.setItem("nekota", authToken);
+  }, [loginStatus, authToken]);
+
   return (
     <React.Fragment>
-      {loginStatus == true && <MainHeader />}
+      <MainHeader loginStatus={loginStatus} />
       <Routes>
-        <Route path="" element={<CheckLogin onCheck={onLoginCheck} dest={present}/>} />
-        <Route path="login" element={<Login onSuccessfullLogin={onLoginCheck} dest={present}/>} />
-        <Route path="signup" element={<SignUp onSuccessfullSignedIn={onLoginCheck}/>} />
-        <Route path="home" element={<Home loginStatus={loginStatus}/>} />
+        <Route
+          path=""
+          element={<CheckLogin onCheck={onLoginCheck} dest={present} />}
+        />
+        <Route
+          path="login"
+          element={<Login onSuccessfullLogin={onLoginCheck} dest={present} />}
+        />
+        <Route
+          path="signup"
+          element={<SignUp onSuccessfullSignedIn={onLoginCheck} />}
+        />
+        <Route path="home" element={<Home loginStatus={loginStatus} />} />
         <Route path="products" excat element={<Products />} />
         <Route path="categories" excat element={<Categories />} />
-        <Route path="*" element={<NotFound/>} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </React.Fragment>
   );
 }
 
 export default App;
+
+// useEffect(() => {
+//   localStorage.setItem('logStat', loginStatus);
+
+//   // navigate("/categories/");
+//   // let baseUrl = "http://127.0.0.1:8000";
+//   // let endOfBaseUrl = baseUrl.length;
+
+//   // if ((window.location.href).length > 23){
+//   //   setPresent((window.location.href).slice(endOfBaseUrl));
+//   // }
+//   // navigate("");
+//   // let mounted = true;
+//   // console.log('app rendering..  ',<CheckLogin onCheck={onLoginCheck}/>);
+//   // <CheckLogin onCheck={onLoginCheck}/>
+//   // return () => (mounted = false);
+// }, [loginStatus]);

@@ -10,11 +10,9 @@ const AddCategory = (props) => {
     const [name,setName] = useState('')
     const submitHandler = (e) => {
         e.preventDefault();
-        let new_product = {
-            'name':name,
-        }
-        props.onAdd(new_product)
+        let newProductName = name
         setName('')
+        props.onAdd(newProductName)
     }
     const nameChangeHandler = (e) => {
         setName(e.target.value)

@@ -5,6 +5,7 @@ app_name = 'categories'
 
 urlpatterns = [
     # path('', category_list, name='categories'),
-    path('', CategoryList.as_view(), name='categories'),
-    path('<int:pk>', category_detail, name='category'),
+    path('list/', CategoryList.as_view(), name='categories'),
+    path('detail/<int:pk>', CategoryDetail.as_view(), name='category-detail'),
+    # path('', category_detail, name='category'),
 ]
