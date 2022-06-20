@@ -18,7 +18,8 @@
     border-color: #741188;
 }
 .button:focus {
-    outline: none;
+    /* outline: none; */
+    outline-color:black;
 }
 
 @media (max-width: 580px) {
@@ -36,3 +37,7 @@
 @media (max-width: 580px){.or{
     width:100%;
 }}
+
+/* .disabled{
+    
+} */

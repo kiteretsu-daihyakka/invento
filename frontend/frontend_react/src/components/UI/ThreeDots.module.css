@@ -1,23 +1,34 @@
 .threeDotMenuModal {
   color: white;
   background-color: transparent;
-  width: 80px;
   /* margin-top: 20px; */
   box-shadow:none;
-  position: initial;
-  float: right;
+  position: absolute;
+  
 }
-
-.threeDotMenu ul{
-  /* margin-top: 30%; */
+.threeDotMenuAndCarretIcon {
+  float:right;
+}
+.threeDotMenu{
+  margin-top: -13%;
   background-color: #4f005f;
   border-radius: 10px;
+  list-style: none;
+  width: 75px;
+  padding: 6%;
 }
 
-.threeDotMenu svg {
+.threeDotMenu button {
+    padding: 0;
+    margin: 0;
+    margin-left:0;
+}
+
+.threeDotMenuModal svg {
   /* content: "";*/
   margin-left: 35px;
   color:#4f005f;
+  font-size:larger;
   /*border-width: 6px;
   border-style: solid;
   border-color: transparent transparent red transparent;

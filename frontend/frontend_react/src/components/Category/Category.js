@@ -24,6 +24,7 @@ const Category = (props) => {
     setThreeDotMenuVisiblity(false);
   }
   function deleteHandler(e) {
+    console.log('clicked on delete.')
     setThreeDotMenuVisiblity(false);
     setShowDeleteConfirm(true);
   }
@@ -31,7 +32,7 @@ const Category = (props) => {
     setShowDeleteConfirm(false);
   }
   async function deleteCat(e) {
-    let category_id = e.currentTarget.closest("li[id]");
+    let caegory_id = e.currentTarget.closest("li[id]");
     let id = category_id.getAttribute("id").replace("category", "");
     let name = category_id.childNodes[0].textContent;
     console.log("name of cat to del: ", name);
@@ -60,7 +61,7 @@ const Category = (props) => {
       className={props.className}
     >
       <span>{props.categoryName}</span>
-      {<ThreeDots className={classes.threeDot} onClick={showThreeDotsMenu} />}
+      {<ThreeDots className={`${classes.threeDot}`} onClick={showThreeDotsMenu} />}
       {threeDotMenuVisiblity == true && (
         <>
           {/* <FontAwesomeIcon icon="fa-solid fa-triangle" style={{color:'red'}}/> */}
@@ -69,25 +70,25 @@ const Category = (props) => {
             onClose={hideThreeDotsMenu}
             backDropclass={modelClasses.transparentBackdrop}
           >
-            
-            <div className={tclasses.threeDotMenu}>
+            <div className={tclasses.threeDotMenuAndCarretIcon}>
               <FontAwesomeIcon
                 icon={solid("caret-up")}
               />
-              <ul>
-                <li>Edit</li>
+              <ul className={tclasses.threeDotMenu}>
+                <li><Button>Edit</Button></li>
                 <hr />
-                <li onClick={deleteHandler}>Delete</li>
+                <li onClick={deleteHandler}><Button>Delete</Button></li>
               </ul>
             </div>
           </Modal>
         </>
       )}
       {showDeleteConfirm == true && (
-        <Modal onClose={hideDeleteConfirm}>
-          <p>Are you sure you want to delete this category?</p>
+        <Modal className={modelClasses.confirmationModal} onClose={hideDeleteConfirm}>
+          <p>Delete <strong>{props.categoryName}</strong> category?</p>
           <div className={btnClasses.btnGroup}>
             <Button onClick={deleteCat}>Yes</Button>
+            &nbsp;
             <Button onClick={hideDeleteConfirm}>No</Button>
           </div>
         </Modal>
