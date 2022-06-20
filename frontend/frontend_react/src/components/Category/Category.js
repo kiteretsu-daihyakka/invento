@@ -16,14 +16,20 @@ import {
 
 const Category = (props) => {
   const [threeDotMenuVisiblity, setThreeDotMenuVisiblity] = useState(false);
+  const [catToOperate, setCatToOperate] = useState({});
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
-  function showThreeDotsMenu() {
+  function showThreeDotsMenu(e) {
+    let category_id = e.currentTarget.closest("li[id]");
+    let id = category_id.getAttribute("id").replace("category", "");
+    let name = category_id.childNodes[0].textContent;
+    setCatToOperate({id,name});
+    // console.log('cat to operate: ',catToOperate);
     setThreeDotMenuVisiblity(true);
   }
   function hideThreeDotsMenu() {
     setThreeDotMenuVisiblity(false);
   }
-  function deleteHandler(e) {
+  function deleteHandler() {
     console.log('clicked on delete.')
     setThreeDotMenuVisiblity(false);
     setShowDeleteConfirm(true);
@@ -31,11 +37,9 @@ const Category = (props) => {
   function hideDeleteConfirm() {
     setShowDeleteConfirm(false);
   }
-  async function deleteCat(e) {
-    let caegory_id = e.currentTarget.closest("li[id]");
-    let id = category_id.getAttribute("id").replace("category", "");
-    let name = category_id.childNodes[0].textContent;
-    console.log("name of cat to del: ", name);
+  async function deleteCat() {
+    let id = catToOperate.id;
+    let name = catToOperate.name;
     const headers = {
       "Content-type": "application/json; charset=UTF-8",
       Authorization: props.token,
