@@ -25,7 +25,7 @@ function App() {
     if (result == true) {
       setTimeout(() => {
         navigate(present);
-      }, 3000);
+      }, 2000);
     }
   }
   useEffect(() => {

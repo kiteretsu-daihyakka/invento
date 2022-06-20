@@ -7,6 +7,12 @@ import modelClasses from "../UI/Modal.module.css";
 import axios from "axios";
 import Button from "../UI/Button";
 import btnClasses from "../UI/Button.module.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  solid,
+  regular,
+  brands,
+} from "@fortawesome/fontawesome-svg-core/import.macro";
 
 const Category = (props) => {
   const [threeDotMenuVisiblity, setThreeDotMenuVisiblity] = useState(false);
@@ -17,28 +23,28 @@ const Category = (props) => {
   function hideThreeDotsMenu() {
     setThreeDotMenuVisiblity(false);
   }
-  function deleteHandler(e){
+  function deleteHandler(e) {
     setThreeDotMenuVisiblity(false);
     setShowDeleteConfirm(true);
   }
-  function hideDeleteConfirm(){
+  function hideDeleteConfirm() {
     setShowDeleteConfirm(false);
   }
   async function deleteCat(e) {
     let category_id = e.currentTarget.closest("li[id]");
-    let id = category_id.getAttribute('id').replace('category','');
+    let id = category_id.getAttribute("id").replace("category", "");
     let name = category_id.childNodes[0].textContent;
-    console.log('name of cat to del: ',name);
+    console.log("name of cat to del: ", name);
     const headers = {
       "Content-type": "application/json; charset=UTF-8",
-      "Authorization": props.token,
+      Authorization: props.token,
     };
-    console.log('id to delete: ',id);
-    let cat_detail_url = category_detail_url.replace('0',id)
-    let response = await axios.delete(cat_detail_url, { id: id },{headers});
-    console.log('resp after del: ',response);
-    if(response.status == 204){
-      props.onDelete(id,name);
+    console.log("id to delete: ", id);
+    let cat_detail_url = category_detail_url.replace("0", id);
+    let response = await axios.delete(cat_detail_url, { id: id }, { headers });
+    console.log("resp after del: ", response);
+    if (response.status == 204) {
+      props.onDelete(id, name);
     }
     hideDeleteConfirm();
   }
@@ -48,28 +54,34 @@ const Category = (props) => {
   //   });
   // }
   return (
-    <li id={"category" + `${props.id}`} key={props.id} className={props.className}>
+    <li
+      id={"category" + `${props.id}`}
+      key={props.id}
+      className={props.className}
+    >
       <span>{props.categoryName}</span>
-      {
-        <ThreeDots
-          className={classes.threeDot}
-          onClick={showThreeDotsMenu}
-        />
-      }
+      {<ThreeDots className={classes.threeDot} onClick={showThreeDotsMenu} />}
       {threeDotMenuVisiblity == true && (
-        <Modal
-          className={`${tclasses.threeDotMenuModal}`}
-          onClose={hideThreeDotsMenu}
-          backDropclass={modelClasses.transparentBackdrop}
-        >
-          <div className={tclasses.threeDotMenu}>
-            <ul>
-              <li>Edit</li>
-              <hr />
-              <li onClick={deleteHandler}>Delete</li>
-            </ul>
-          </div>
-        </Modal>
+        <>
+          {/* <FontAwesomeIcon icon="fa-solid fa-triangle" style={{color:'red'}}/> */}
+          <Modal
+            className={`${tclasses.threeDotMenuModal}`}
+            onClose={hideThreeDotsMenu}
+            backDropclass={modelClasses.transparentBackdrop}
+          >
+            
+            <div className={tclasses.threeDotMenu}>
+              <FontAwesomeIcon
+                icon={solid("caret-up")}
+              />
+              <ul>
+                <li>Edit</li>
+                <hr />
+                <li onClick={deleteHandler}>Delete</li>
+              </ul>
+            </div>
+          </Modal>
+        </>
       )}
       {showDeleteConfirm == true && (
         <Modal onClose={hideDeleteConfirm}>

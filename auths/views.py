@@ -6,6 +6,7 @@ from rest_framework.status import HTTP_200_OK,HTTP_201_CREATED, HTTP_400_BAD_REQ
 from categories.models import Business
 from .serializers import BusinessSerializer
 from django.contrib.auth import authenticate, login, logout
+from rest_framework.authtoken.models import Token
 
 # Create your views here.
 # @api_view(['POST'])
@@ -27,8 +28,9 @@ def do_signup(request):
         # print('serializer',serializer)
         if serializer.is_valid():
             serializer.save()
+            tokenObj = Token.objects.get(user=Business.objects.get(username=serializer.data['username']))
             # if try_login(request, serializer.data['username'], serializer.data['password']):
-            return Response(status=HTTP_201_CREATED)
+            return Response(data={'token':tokenObj.key},status=HTTP_201_CREATED)
             # else:
             #     print('login returned false')
             #     return Response(status=HTTP_400_BAD_REQUEST)

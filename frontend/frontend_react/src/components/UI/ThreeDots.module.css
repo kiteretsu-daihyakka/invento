@@ -1,29 +1,37 @@
 .threeDotMenuModal {
   color: white;
   background-color: transparent;
-  width: auto; 
+  width: 80px;
+  /* margin-top: 20px; */
+  box-shadow:none;
+  position: initial;
+  float: right;
 }
 
 .threeDotMenu ul{
-  margin-top: 30%;
+  /* margin-top: 30%; */
   background-color: #4f005f;
   border-radius: 10px;
 }
 
-.threeDotMenu::before {
-  /* background-color: #4f005f; */
-  content: "";
-  position: absolute;
-  /* top: 100%; */
-  /* left: 10%; */
-  margin-left: 50%;
-  border-width: 5px;
+.threeDotMenu svg {
+  /* content: "";*/
+  margin-left: 35px;
+  color:#4f005f;
+  /*border-width: 6px;
   border-style: solid;
-  border-color: transparent transparent #4f005f transparent;
-  /* border-color: red red red red; */
-  /* padding: 0%; */
-  /* background-color: #4f005f; */
-  top: 12%;
+  border-color: transparent transparent red transparent;
+  top: 2%; */
+
+  /* background-color: #4f005f; 
+  position: initial;
+  top: 100%;
+  left: 10%; */
+  
+  /* border-color: red red red red;
+  padding: 0%;
+  background-color: #4f005f; */
+  
 }
 .popuptextli {
 }

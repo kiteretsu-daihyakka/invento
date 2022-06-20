@@ -29,20 +29,17 @@ const SignUp = (props) => {
     ) {
       const details = { name: busName, username: uname, password: pass };
       console.log("data to be sent:", details);
-      let resp = await fetch(signupUrl, {
-        method: "POST",
+      let response = await axios.post(signupUrl,details, {
         headers: {
           "Content-Type": "application/json; charset=UTF-8",
           "X-CSRFTOKEN": csrfToken,
         },
-        body: JSON.stringify(details),
       });
-      let data = resp;
-      console.log("data: ", data);
-      if (data.status == 201) {
+      // let data = await resp;
+      console.log("response: ", response);
+      if (response.status == 201) {
         console.log("user signed in!");
-        props.onSuccessfullSignedIn(true);
-        navigate('/categories');
+        props.onSuccessfullSignedIn(true,response.data.token);
       } else {
         console.log("user could not signed in, some error occured..");
         props.onSuccessfullSignedIn(false);
