@@ -33,7 +33,7 @@ const Categories = (props) => {
     fetch(categories_url, {
       headers: {
         "Content-type": "application/json; charset=UTF-8",
-        "Authorization": "Token "+localStorage.getItem('nekota'),
+        Authorization: "Token " + localStorage.getItem("nekota"),
       },
     })
       .then((response) => {
@@ -57,14 +57,14 @@ const Categories = (props) => {
   async function insertCategory() {
     const headers = {
       "Content-type": "application/json; charset=UTF-8",
-      "Authorization": "Token "+localStorage.getItem('nekota'),
+      Authorization: "Token " + localStorage.getItem("nekota"),
     };
     let response = await axios.post(categories_url, _data, { headers });
-    console.log('res ',response);
+    console.log("res ", response);
     if (response.status === 201) {
       setShowAddCategory(false);
       console.log("category added successfully!");
-      _data['id'] = response.data['id'];
+      _data["id"] = response.data["id"];
     } else {
       console.log("failed to create new category..");
       return false;
@@ -79,15 +79,26 @@ const Categories = (props) => {
       return [_data, ...prevState];
     });
   }
+  function onEditHandler(id, newCategoryName) {
+    setCategories((prevState) => {
+      return prevState.map((cat) => {
+        if (cat.id.toString() == id) {
+          cat['name']= newCategoryName
+        }
+        return cat;
+      });
+    });
+    console.log(`category changed to ${newCategoryName}.`);
+  }
   function addCategoryButtonHandler() {
     setShowAddCategory(true);
   }
-  
-  function deleteHandler(id,name) {
+
+  function deleteHandler(id, name) {
     setCategories((prevState) => {
-      return prevState.filter(cat => cat.id.toString() !== id);
+      return prevState.filter((cat) => cat.id.toString() !== id);
     });
-    console.log(name+" category deleted.");
+    console.log(name + " category deleted.");
   }
   function onCloseAddCategoryModal() {
     setShowAddCategory(false);
@@ -101,7 +112,6 @@ const Categories = (props) => {
           <AddCategory onAdd={onAddHandler} onClose={onCloseAddCategoryModal} />
         </Modal>
       )}
-      
 
       <div className={styles.categories}>
         {showAddCategory == false && (
@@ -125,6 +135,7 @@ const Categories = (props) => {
                   categoryName={categoryData.name}
                   className={styles.category}
                   onDelete={deleteHandler}
+                  onEdit={onEditHandler}
                   token={props.token}
                 />
               ))}

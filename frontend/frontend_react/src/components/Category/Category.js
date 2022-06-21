@@ -20,6 +20,7 @@ const Category = (props) => {
   const [catToOperate, setCatToOperate] = useState({});
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [showEditCategory, setShowEditCategory] = useState(false);
+  
   function showThreeDotsMenu(e) {
     let category_id = e.currentTarget.closest("li[id]");
     let id = category_id.getAttribute("id").replace("category", "");
@@ -44,6 +45,7 @@ const Category = (props) => {
     // setShowEditCategory(true);
     console.log({newCategoryName});
     setShowEditCategory(false);
+    props.onEdit(catToOperate.id,newCategoryName);
   }
   function hideEditCategoryModal() {
     setShowEditCategory(false);
@@ -112,7 +114,7 @@ const Category = (props) => {
         </Modal>
       )}
       {showEditCategory == true && (
-        <EditCategory onEdit={onEditHandler} onClose={hideEditCategoryModal} categoryName={props.categoryName}/>
+        <EditCategory onEdit={onEditHandler} onClose={hideEditCategoryModal} categoryName={props.categoryName} categoryID={props.id}/>
       )}
     </li>
   );

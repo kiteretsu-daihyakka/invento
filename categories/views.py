@@ -30,10 +30,18 @@ class CategoryDetail(APIView):
 
     def put(self, request, pk):
         cat = self.get_object(pk)
+        auth_token = str(request.META.get('HTTP_AUTHORIZATION'))
+        auth_token = auth_token.replace('Token ','')
+        # business_user = request.data['token']
+        print('token: ',auth_token)
+        # print('all tokens: ', Token.objects.all().filter(key=auth_token.replace('Token ','')).values())
+        token_user = Token.objects.get(key=auth_token).user
+        # print('logged in user:', request.user)
+        request.data['owner'] = token_user.id
         serializer = CategorySerializer(cat, data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
+            return Response(serializer.data, status=HTTP_200_OK)
         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):
