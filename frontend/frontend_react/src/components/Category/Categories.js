@@ -82,6 +82,7 @@ const Categories = (props) => {
   function addCategoryButtonHandler() {
     setShowAddCategory(true);
   }
+  
   function deleteHandler(id,name) {
     setCategories((prevState) => {
       return prevState.filter(cat => cat.id.toString() !== id);
@@ -100,6 +101,7 @@ const Categories = (props) => {
           <AddCategory onAdd={onAddHandler} onClose={onCloseAddCategoryModal} />
         </Modal>
       )}
+      
 
       <div className={styles.categories}>
         {showAddCategory == false && (

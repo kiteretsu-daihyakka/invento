@@ -7,6 +7,7 @@ import modelClasses from "../UI/Modal.module.css";
 import axios from "axios";
 import Button from "../UI/Button";
 import btnClasses from "../UI/Button.module.css";
+import EditCategory from "./EditCategory";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   solid,
@@ -18,6 +19,7 @@ const Category = (props) => {
   const [threeDotMenuVisiblity, setThreeDotMenuVisiblity] = useState(false);
   const [catToOperate, setCatToOperate] = useState({});
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [showEditCategory, setShowEditCategory] = useState(false);
   function showThreeDotsMenu(e) {
     let category_id = e.currentTarget.closest("li[id]");
     let id = category_id.getAttribute("id").replace("category", "");
@@ -31,8 +33,20 @@ const Category = (props) => {
   }
   function deleteHandler() {
     console.log('clicked on delete.')
-    setThreeDotMenuVisiblity(false);
+    hideThreeDotsMenu();
     setShowDeleteConfirm(true);
+  }
+  function showEditCategoryModal() {
+    hideThreeDotsMenu();
+    setShowEditCategory(true);
+  }
+  function onEditHandler(newCategoryName) {
+    // setShowEditCategory(true);
+    console.log({newCategoryName});
+    setShowEditCategory(false);
+  }
+  function hideEditCategoryModal() {
+    setShowEditCategory(false);
   }
   function hideDeleteConfirm() {
     setShowDeleteConfirm(false);
@@ -79,7 +93,7 @@ const Category = (props) => {
                 icon={solid("caret-up")}
               />
               <ul className={tclasses.threeDotMenu}>
-                <li><Button>Edit</Button></li>
+                <li><Button onClick={showEditCategoryModal}>Edit</Button></li>
                 <hr />
                 <li onClick={deleteHandler}><Button>Delete</Button></li>
               </ul>
@@ -96,6 +110,9 @@ const Category = (props) => {
             <Button onClick={hideDeleteConfirm}>No</Button>
           </div>
         </Modal>
+      )}
+      {showEditCategory == true && (
+        <EditCategory onEdit={onEditHandler} onClose={hideEditCategoryModal} categoryName={props.categoryName}/>
       )}
     </li>
   );

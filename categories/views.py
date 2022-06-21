@@ -12,6 +12,7 @@ from rest_framework.views import APIView
 from django.conf import settings
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import get_user_model
+from django.http import Http404
 
 User = get_user_model()
 
