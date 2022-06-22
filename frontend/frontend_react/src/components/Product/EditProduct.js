@@ -7,15 +7,15 @@ import { useState } from "react";
 import Modal from "../UI/Modal";
 import axios from "axios";
 
-const EditCategory = (props) => {
-  const [name, setName] = useState(props.categoryName);
+const EditProduct = (props) => {
+  const [name, setName] = useState(props.productName);
   let nekota = localStorage.getItem("nekota");
 
   const onSaveHandler = (e) => {
     e.preventDefault();
-    let newCategoryName = name.trim();
-    if (newCategoryName.length > 0) {
-      EditCat(props.categoryID, newCategoryName);
+    let newProductName = name.trim();
+    if (newProductName.length > 0) {
+      EditCat(props.productID, newProductName);
     }
   };
   async function EditCat(id, name) {
@@ -25,13 +25,13 @@ const EditCategory = (props) => {
       Authorization: nekota,
     };
     console.log("id to edit: ", id);
-    let cat_detail_url = category_detail_url.replace("0", id);
+    let cat_detail_url = product_detail_url.replace("0", id);
     let response = await axios.put(cat_detail_url, { id, name }, { headers });
     console.log("resp after edit: ", response);
     if (response.status == 200) {
       props.onEdit(name);
     }else{
-        console.log("Failed to update category name, please try again after some time..");
+        console.log("Failed to update product name, please try again after some time..");
     }
   }
   const nameChangeHandler = (e) => {
@@ -41,7 +41,7 @@ const EditCategory = (props) => {
     <Modal onClose={props.onClose}>
       <div className={classes.input}>
         <form onSubmit={onSaveHandler}>
-          <label htmlFor="name">Edit Category Name</label>
+          <label htmlFor="name">Edit Product Name</label>
           <input
             type="text"
             id="updateName"
@@ -63,4 +63,4 @@ const EditCategory = (props) => {
     </Modal>
   );
 };
-export default EditCategory;
+export default EditProduct;

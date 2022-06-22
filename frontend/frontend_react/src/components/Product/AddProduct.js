@@ -8,9 +8,9 @@ import { useState } from "react";
 // import addProductAPI from './apis.js'
 
 const AddProduct = (props) => {
-    const [name,setName] = useState('')
-    const [price,setPrice] = useState('')
-    const [category,setCategory] = useState('')
+    const [name,setName] = useState()
+    const [price,setPrice] = useState()
+    const [category,setCategory] = useState()
     const submitHandler = (e) => {
         e.preventDefault();
         let new_product = {
@@ -23,6 +23,7 @@ const AddProduct = (props) => {
         setName('')
         setPrice('')
         setCategory('')
+        onCloseHandler();
     }
     const nameChangeHandler = (e) => {
         setName(e.target.value)

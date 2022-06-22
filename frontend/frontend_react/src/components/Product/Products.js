@@ -34,12 +34,27 @@ const Products = () => {
         "X-CSRFToken": csrfToken,
       },
     })
-      .then((response) => response.json())
-      .then((json) => console.log(json))
+      .then((response) => {
+        console.log({ response });
+        let dt = response.json();
+
+        return dt;
+      })
+      .then((json) => {
+        console.log({ json });
+        console.log("res add prod id", json["id"]);
+        // if (response.status === 201) {
+        console.log("coming in 201 addproduct");
+        setProducts((currentProducts) => {
+          _data["id"] = json.id;
+          console.log({ _data });
+          return [_data, ...currentProducts];
+        });
+        // }
+      })
       .catch((err) => console.log(err));
   }
   function fetchProductsHandler() {
-    const products_url = "http://127.0.0.1:8000/products/api/";
     // const products_url = "https://swapi.dev/api/people/1"
     // let headers = new Headers();
     // fetch("http://localhost:8000/products/")
@@ -66,32 +81,31 @@ const Products = () => {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
+        console.log("product list data", data);
         // console.log(data.results)
-        const transformProducts = data.map((productDetail) => {
-          return {
-            id: productDetail.id,
-            name: productDetail.name,
-            price: productDetail.price,
-            category: productDetail.category,
-          };
-        });
-        console.log(transformProducts);
-        setProducts(transformProducts);
-      });
+        // const transformProducts = data.map((productDetail) => {
+        //   return {
+        //     id: productDetail.id,
+        //     name: productDetail.name,
+        //     price: productDetail.price,
+        //     category: productDetail.category,
+        //   };
+        // });
+        // console.log(transformProducts);
+        // setProducts(transformProducts);
+        setProducts(data);
+      })
+      .catch((err) => console.log("some errors: ", err));
   }
 
   const addProductHandler = (newProduct) => {
-    setProducts((currentProducts) => {
-      _data = {
-        id: 1,
-        name: newProduct.name,
-        category: newProduct.category,
-        price: newProduct.price,
-      };
-      insertProductData();
-      return [newProduct, ...currentProducts];
-    });
+    _data = {
+      // id: 1,
+      name: newProduct.name,
+      price: newProduct.price,
+      category: newProduct.category,
+    };
+    insertProductData();
   };
   function addProductButtonHandler() {
     setShowAddProduct(true);
@@ -100,8 +114,8 @@ const Products = () => {
     setShowAddProduct(false);
   }
   return (
-    <>
-    {/* <MainHeader/> */}
+    <Card>
+      {/* <MainHeader/> */}
       {/* <h2>Products</h2> */}
       {/* <Button onClick={fetchProductsHandler}>Fetch Products</Button> */}
       {showAddProduct == true && (
@@ -125,11 +139,12 @@ const Products = () => {
               <h3>Loading...</h3>
             </li>
           </ul>
-        ):products.length > 0 ? (
+        ) : products.length > 0 ? (
           <ul>
             {products.map((productData) => (
               <Product
-                key={Math.random().toString()}
+                id={`product${productData.id}`}
+                key={productData.id}
                 name={productData.name}
                 price={productData.price}
                 category={productData.category}
@@ -139,9 +154,8 @@ const Products = () => {
         ) : (
           <NoRecords entityName="Products" />
         )}
-        
       </div>
-    </>
+    </Card>
   );
 };
 
