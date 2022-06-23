@@ -113,6 +113,26 @@ const Products = () => {
   function onCloseAddProductModal() {
     setShowAddProduct(false);
   }
+  function deleteHandler(id, name) {
+    setProducts((prevState) => {
+      return prevState.filter((prod) => prod.id.toString() !== id);
+    });
+    console.log(name + " product deleted.");
+  }
+
+  function onEditHandler(id, name, price, category) {
+    console.log("new product detail: ", { id, name, price, category });
+    setProducts((prevState) => {
+      return prevState.map((prod) => {
+        if (prod.id.toString() == id) {
+          prod["name"] = name;
+          prod["price"] = price;
+          prod["category"] = category;
+        }
+        return prod;
+      });
+    });
+  }
   return (
     <Card>
       {/* <MainHeader/> */}
@@ -148,6 +168,8 @@ const Products = () => {
                 name={productData.name}
                 price={productData.price}
                 category={productData.category}
+                onDelete={deleteHandler}
+                onEdit={onEditHandler}
               />
             ))}
           </ul>
