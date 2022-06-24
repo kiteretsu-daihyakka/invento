@@ -13,23 +13,27 @@ import MainHeader from "../Header/MainHeader";
 import CheckLogin from "../Auth/CheckLogin";
 
 const Categories = (props) => {
+  document.title = "Categories";
   const [showAddCategory, setShowAddCategory] = useState(false);
-  const [categories, setCategories] = useState([]);
+  
   let _data;
   let [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    console.log("categories state: ",props.categories)
     // let mounted = true;
-    fetchCategories();
+    if (props.categories == false){
+      fetchCategories();
+    }
     // return () => (mounted = false);
   }, []);
 
   function fetchCategories() {
-    setIsLoading(true);
     // const headers = {
     //   "Content-type": "application/json; charset=UTF-8",
     //   "Authorization": props.token,
     // }
+    setIsLoading(true);
     fetch(categories_url, {
       headers: {
         "Content-type": "application/json; charset=UTF-8",
@@ -51,7 +55,7 @@ const Categories = (props) => {
         //   };
         // });
         // console.log(transformCategories);
-        setCategories(data);
+        props.setCategories(data);
       });
   }
   async function insertCategory() {
@@ -75,12 +79,12 @@ const Categories = (props) => {
       name: newCategoryName,
     };
     insertCategory();
-    setCategories((prevState) => {
+    props.setCategories((prevState) => {
       return [_data, ...prevState];
     });
   }
   function onEditHandler(id, newCategoryName) {
-    setCategories((prevState) => {
+    props.setCategories((prevState) => {
       return prevState.map((cat) => {
         if (cat.id.toString() == id) {
           cat['name']= newCategoryName
@@ -95,7 +99,7 @@ const Categories = (props) => {
   }
 
   function deleteHandler(id, name) {
-    setCategories((prevState) => {
+    props.setCategories((prevState) => {
       return prevState.filter((cat) => cat.id.toString() !== id);
     });
     console.log(name + " category deleted.");
@@ -114,21 +118,21 @@ const Categories = (props) => {
       )}
 
       <div className={styles.categories}>
-        {showAddCategory == false && (
-          <div className={btnClasses.alignRight}>
-            <Button onClick={addCategoryButtonHandler}>Add New Category</Button>
-          </div>
-        )}
         {isLoading == true ? (
           <ul>
             <li>
               <h3>Loading...</h3>
             </li>
           </ul>
-        ) : categories.length > 0 ? (
+        ) : props.categories.length > 0 ? (
           <Card>
+            {showAddCategory == false && (
+              <div className={btnClasses.alignRight}>
+                <Button onClick={addCategoryButtonHandler}>Add New Category</Button>
+              </div>
+            )}
             <ul>
-              {categories.map((categoryData) => (
+              {props.categories.map((categoryData) => (
                 <Category
                   id={categoryData.id}
                   key={categoryData.id}

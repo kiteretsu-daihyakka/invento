@@ -5,7 +5,7 @@ import classes from './AboutUs.module.css'
 const AboutUs = () =>{
     return <Card className={classes.quoteCard}>
         <div className={classes.quote}>
-            Welcome to Invento,<br/>An Inventory Management site that aims to manage your products and categories.
+            Welcome to <span>Invento</span>,<br/>An Inventory Management site that aims to manage your products and categories.
         </div>
     </Card>
 }

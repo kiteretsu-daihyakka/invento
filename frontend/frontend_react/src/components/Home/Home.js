@@ -6,6 +6,7 @@ import Actions from "./Actions"
 import MainHeader from '../Header/MainHeader';
 
 const Home = (props) => {
+  document.title = "Home"
   return <React.Fragment>
     {/* <MainHeader/> */}
     {/* <Logo/> */}

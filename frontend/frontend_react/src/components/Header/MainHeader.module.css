@@ -30,6 +30,7 @@
 .header a {
     color: white;
     text-decoration: none;
+    font-weight: bold;
 }
 
 .header a:hover{

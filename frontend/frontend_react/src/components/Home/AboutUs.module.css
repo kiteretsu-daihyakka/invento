@@ -1,9 +1,10 @@
 .quote {
     text-align:center;
     font-size: large;
+    font-weight: bold;
     color: white;
 }
 .quoteCard{
     background-color: #741188;
-    padding: 1%;
+    padding: 10%;
 }

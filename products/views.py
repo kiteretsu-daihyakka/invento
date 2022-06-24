@@ -6,24 +6,31 @@ from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP_204_NO_CONTENT
 from rest_framework.decorators import api_view
 from rest_framework import generics
+from rest_framework.authtoken.models import Token
 
-class ProductList(generics.ListCreateAPIView):
-    queryset = Product.objects.all().order_by('-id')
-    serializer_class = ProductSerializer
+# class ProductList(generics.ListCreateAPIView):
+#     queryset = Product.objects.all().order_by('-id')
+#     serializer_class = ProductSerializer
     
-    def create(self, request, *args, **kwargs):
-        print('logged in user:', request.user)
-        serializer = self.get_serializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(HTTP_200_OK)
-        else:
-            print('errors:', serializer.errors)
+#     def create(self, request, *args, **kwargs):
+#         print('logged in user:', request.user)
+#         serializer = self.get_serializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(HTTP_200_OK)
+#         else:
+#             print('errors:', serializer.errors)
             
 @api_view(['GET','POST'])
 def product_list(request):
     if request.method == 'GET':
-        products = Product.objects.all().order_by('-id')
+        auth_token = str(request.META.get('HTTP_AUTHORIZATION'))
+        auth_token = auth_token.replace('Token ','')
+        print('token: ',auth_token)
+        token_user = Token.objects.get(key=auth_token).user
+        print(type(token_user))
+        print('id of user: ',token_user.id)
+        products = Product.objects.filter(category__owner=token_user).order_by('-id')
         print(products)
         serializer = ProductSerializer(products,many=True)
         print(serializer.data)

@@ -18,7 +18,9 @@ function App() {
     localStorage.getItem("logStat") === "true"
   );
   const [authToken, setAuthToken] = useState(localStorage.getItem("nekota"));
-
+  const [categories, setCategories] = useState(false);
+  const [products, setProducts] = useState(false);
+    
   function onLoginCheck(result, token) {
     setLoggedInStatus(result);
     setAuthToken(token);
@@ -50,8 +52,8 @@ function App() {
           element={<SignUp onSuccessfullSignedIn={onLoginCheck} />}
         />
         <Route path="home" element={<Home loginStatus={loginStatus} />} />
-        <Route path="products" excat element={<Products />} />
-        <Route path="categories" excat element={<Categories />} />
+        <Route path="products" excat element={<Products products={products} setProducts={setProducts}/>} />
+        <Route path="categories" excat element={<Categories categories={categories} setCategories={setCategories}/>} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </React.Fragment>

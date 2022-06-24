@@ -8,18 +8,20 @@ import classes from "./Products.module.css";
 import btnClasses from "../UI/Button.module.css";
 import Modal from "../UI/Modal";
 import NoRecords from "../Helpers/NoRecords";
-import MainHeader from "../Header/MainHeader";
+// import MainHeader from "../Header/MainHeader";
 
-const Products = () => {
+const Products = (props) => {
+  document.title = "Products";
   const [showAddProduct, setShowAddProduct] = useState(false);
-  const [products, setProducts] = useState([]);
   let _data;
   let [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    let mounted = true;
-    fetchProductsHandler();
-    return () => (mounted = false);
+    // let mounted = true;
+    if (props.products == false){
+      fetchProductsHandler();
+    }
+    // return () => (mounted = false);
   }, []);
 
   function insertProductData() {
@@ -45,7 +47,7 @@ const Products = () => {
         console.log("res add prod id", json["id"]);
         // if (response.status === 201) {
         console.log("coming in 201 addproduct");
-        setProducts((currentProducts) => {
+        props.setProducts((currentProducts) => {
           _data["id"] = json.id;
           console.log({ _data });
           return [_data, ...currentProducts];
@@ -72,9 +74,14 @@ const Products = () => {
     // headers.append('Origin','http://localhost:3000');
 
     // headers = {}
-    // setProducts([{id:-1,name:'',price:'',category:'Loading...'}])
+    // props.setProducts([{id:-1,name:'',price:'',category:'Loading...'}])
     setIsLoading(true);
-    fetch(products_url)
+    fetch(products_url, {
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+        Authorization: "Token " + localStorage.getItem("nekota"),
+      },
+    })
       .then((response) => {
         console.log(response);
         setIsLoading(false);
@@ -92,8 +99,8 @@ const Products = () => {
         //   };
         // });
         // console.log(transformProducts);
-        // setProducts(transformProducts);
-        setProducts(data);
+        // props.setProducts(transformProducts);
+        props.setProducts(data);
       })
       .catch((err) => console.log("some errors: ", err));
   }
@@ -114,7 +121,7 @@ const Products = () => {
     setShowAddProduct(false);
   }
   function deleteHandler(id, name) {
-    setProducts((prevState) => {
+    props.setProducts((prevState) => {
       return prevState.filter((prod) => prod.id.toString() !== id);
     });
     console.log(name + " product deleted.");
@@ -122,7 +129,7 @@ const Products = () => {
 
   function onEditHandler(id, name, price, category) {
     console.log("new product detail: ", { id, name, price, category });
-    setProducts((prevState) => {
+    props.setProducts((prevState) => {
       return prevState.map((prod) => {
         if (prod.id.toString() == id) {
           prod["name"] = name;
@@ -159,9 +166,9 @@ const Products = () => {
               <h3>Loading...</h3>
             </li>
           </ul>
-        ) : products.length > 0 ? (
+        ) : props.products.length > 0 ? (
           <ul>
-            {products.map((productData) => (
+            {props.products.map((productData) => (
               <Product
                 id={`product${productData.id}`}
                 key={productData.id}
