@@ -4,3 +4,4 @@ cd ../..
 git add *
 git commit -m "%*"
 git push
+python deploy.py

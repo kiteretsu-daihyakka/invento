@@ -156,7 +156,7 @@ const Products = (props) => {
 
       <div className={classes.products}>
         {showAddProduct == false && (
-          <div className={btnClasses.alignRight}>
+          <div className={`${btnClasses.alignRight} ${btnClasses.paddingLeft}`}>
             <Button onClick={addProductButtonHandler}>Add New Product</Button>
           </div>
         )}
