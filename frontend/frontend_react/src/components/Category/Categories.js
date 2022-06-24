@@ -127,7 +127,7 @@ const Categories = (props) => {
         ) : props.categories.length > 0 ? (
           <Card>
             {showAddCategory == false && (
-              <div className={`${btnClasses.alignRight} ${btnClasses.paddingLeft}`}>
+              <div className={`${btnClasses.alignRight} ${btnClasses.paddingRight}`}>
                 <Button onClick={addCategoryButtonHandler}>Add New Category</Button>
               </div>
             )}
