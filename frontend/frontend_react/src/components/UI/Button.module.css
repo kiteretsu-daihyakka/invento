@@ -9,6 +9,9 @@
 .paddingLeft{
     margin-left: 2%;
 }
+.paddingRight{
+    margin-right: 3%;
+}
 .alignRight{
     text-align:right;
 }
@@ -27,6 +30,9 @@
         /* width: 90%; */
         /* margin-left: 5%; */
         /* height: 80px; */
+    }
+    .paddingRight{
+        margin-right: 5%;
     }
 }
 
