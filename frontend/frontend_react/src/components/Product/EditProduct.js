@@ -38,12 +38,13 @@ const EditProduct = (props) => {
     }
     console.log({ new_product });
     EditProd(new_product);
-    onCloseHandler();
+    props.onClose();
   };
 
   async function EditProd(new_product) {
+    console.log({new_product});
     const id = props.productID;
-    const [name, price, category] = new_product;
+    const {name, price, category} = new_product;
     console.log({ nekota });
     const headers = {
       "Content-type": "application/json; charset=UTF-8",
@@ -84,15 +85,16 @@ const EditProduct = (props) => {
           <select name="category-dropdown" id="category-dd" ref={category}>
             <option value="-1">Select Category</option>
             {props.categories.map((cat) => {
-              if (cat.id == props.productID) {
+              if (cat.id == props.cat) {
+                console.log(cat.id,' ',props.cat)
                 return (
-                  <option value={cat.id} selected>
+                  <option value={cat.id} key={cat.id} selected>
                     {cat.name}
                   </option>
                 );
               } else {
                 return (
-                  <option value={cat.id} selected>
+                  <option value={cat.id} key={cat.id}>
                     {cat.name}
                   </option>
                 );

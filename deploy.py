@@ -2,7 +2,7 @@ import webbrowser as wb
 import pyautogui as auto
 import time
 
-wb.open('https://www.pythonanywhere.com/user/Invento/consoles/24748295/')
+wb.open('https://www.pythonanywhere.com/user/Invento/consoles/24754049/')
 time.sleep(10)
 auto.write('bash ./shoot.sh')
 auto.press('enter')
