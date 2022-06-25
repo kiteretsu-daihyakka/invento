@@ -128,6 +128,7 @@ const Product = (props) => {
           productID={prodToOperate.id}
           price={props.price}
           cat={props.category}
+          categories={props.categories}
         />
       )}
     </li>

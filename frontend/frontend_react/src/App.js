@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import { Route, Routes, useNavigate } from "react-router-dom";
-
 import Products from "./components/Product/Products";
 import Home from "./components/Home/Home";
 import MainHeader from "./components/Header/MainHeader";
@@ -27,12 +26,30 @@ function App() {
     if (result == true) {
       setTimeout(() => {
         navigate(present);
-      }, 2000);
+      }, 1000);
     }
   }
+  async function loadCategories(){
+    await fetch(categories_url, {
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+        Authorization: "Token " + localStorage.getItem("nekota"),
+      },
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        console.log("categories>>>", data);
+        setCategories(data);
+      });
+  }
+
   useEffect(() => {
     localStorage.setItem("logStat", loginStatus);
     localStorage.setItem("nekota", authToken);
+    console.log('running effect app')
+    loadCategories();
   }, [loginStatus, authToken]);
 
   return (
@@ -52,8 +69,8 @@ function App() {
           element={<SignUp onSuccessfullSignedIn={onLoginCheck} />}
         />
         <Route path="home" element={<Home loginStatus={loginStatus} />} />
-        <Route path="products" excat element={<Products products={products} setProducts={setProducts}/>} />
-        <Route path="categories" excat element={<Categories categories={categories} setCategories={setCategories}/>} />
+        <Route path="products" excat element={<Products products={products} setProducts={setProducts} categories={categories}/>} />
+        <Route path="categories" excat element={<Categories categories={categories} setCategories={setCategories} loadCategories={loadCategories}/>} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </React.Fragment>

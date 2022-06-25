@@ -19,44 +19,19 @@ const Categories = (props) => {
   let _data;
   let [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    console.log("categories state: ",props.categories)
-    // let mounted = true;
-    if (props.categories == false){
-      fetchCategories();
-    }
-    // return () => (mounted = false);
-  }, []);
+  // useEffect(() => {
+  //   console.log("categories state: ",props.categories)
+  //   // let mounted = true;
+  //   if (props.categories == false){
+  //     fetchCategories();
+  //   }
+  //   // return () => (mounted = false);
+  // }, []);
 
   function fetchCategories() {
-    // const headers = {
-    //   "Content-type": "application/json; charset=UTF-8",
-    //   "Authorization": props.token,
-    // }
     setIsLoading(true);
-    fetch(categories_url, {
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-        Authorization: "Token " + localStorage.getItem("nekota"),
-      },
-    })
-      .then((response) => {
-        console.log("response>>", response);
-        setIsLoading(false);
-        return response.json();
-      })
-      .then((data) => {
-        console.log("categories>>>", data);
-        // console.log(data.results)
-        // const transformCategories = data.map((categoeyDetail) => {
-        //   return {
-        //     id: categoeyDetail.id,
-        //     name: categoeyDetail.name,
-        //   };
-        // });
-        // console.log(transformCategories);
-        props.setCategories(data);
-      });
+    props.loadCategories();
+    setIsLoading(false);
   }
   async function insertCategory() {
     const headers = {

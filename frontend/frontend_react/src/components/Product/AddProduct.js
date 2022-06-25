@@ -3,55 +3,70 @@ import Button from "../UI/Button";
 import Card from "../UI/Card";
 import Modal from "../UI/Modal";
 import classes from '../UI/input.module.css'
+import addClasses from './AddProduct.module.css'
 import btnClasses from '../UI/Button.module.css'
-import { useState } from "react";
+import { useState,useRef,useEffect } from "react";
 // import addProductAPI from './apis.js'
 
 const AddProduct = (props) => {
-    const [name,setName] = useState()
-    const [price,setPrice] = useState()
-    const [category,setCategory] = useState()
+    // const [appliedDD,setApplied] = useState(false);
+    useEffect(() => {
+      // if(appliedDD == false){
+        $('#category-dd').select2();
+        // setApplied(true);
+      // }
+    }, []);
+
+    let name = useRef()
+    let price = useRef()
+    let category = useRef()
     const submitHandler = (e) => {
         e.preventDefault();
         let new_product = {
-            'name':name,
-            'price':price,
-            'category':category
+          'name':name.current.value.trim(),
+          'price':price.current.value.trim(),
+          'category':category.current.value
         }
-
+        if(new_product.name.length == 0){
+          alert('Please Enter Product Name.')
+          return
+        }
+        if(new_product.price.length == 0){
+          alert('Please Enter Product Price.')
+          return
+        }
+        if(new_product.category == -1){
+          alert('Please Select Product Category.')
+          return
+        }
+        console.log({new_product})
         props.onAdd(new_product)
-        setName('')
-        setPrice('')
-        setCategory('')
         onCloseHandler();
-    }
-    const nameChangeHandler = (e) => {
-        setName(e.target.value)
-    }
-    const priceChangeHandler = (e) => {
-        setPrice(e.target.value)
-    }
-    const categoryChangeHandler = (e) => {
-        setCategory(e.target.value)
     }
     const onCloseHandler = () => {
       props.onClose()
     }
   return (
-    <div className={classes.input}>
+    <Modal className={classes.input}>
       <form onSubmit={submitHandler}>
         <label htmlFor="name">Enter Product Name</label>
-        <input type="text" id="name" value={name} onChange={nameChangeHandler}/>
+        <input type="text" id="name" ref={name}/>
         <label htmlFor="price">Enter Price</label>
-        <input type="number" id="price" value={price} onChange={priceChangeHandler}/>
+        <input type="number" id="price" ref={price}/>
         <label htmlFor="category">Select Category</label>
-        <input type="category" id="category" value={category} onChange={categoryChangeHandler}/>
+        {/* <input type="category" id="category" value={category} onChange={categoryChangeHandler}/> */}
+        <select name="category-dropdown" id="category-dd" ref={category}>
+          <option value="-1">Select Category</option>
+          {props.categories.map((cat) => (
+            <option value={cat.id} key={cat.id}>{cat.name}</option>
+          ))}
+        </select>
         <div className={btnClasses.btnGroup}>
           <Button type="submit">Add Product</Button>
           <Button type="button" onClick={onCloseHandler} className={btnClasses.paddingLeft}>Close</Button>
         </div>
       </form>
-    </div>
+    </Modal>
   );
 };
 export default AddProduct;

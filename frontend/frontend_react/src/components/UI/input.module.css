@@ -12,7 +12,7 @@
     text-align: left;
 }
 
-.input input{
+.input input,select{
     font: inherit;
     display: block;
     width: 100%;
@@ -21,7 +21,7 @@
     margin-bottom: 0.5rem;
 }
 
-.input input:focus{
+.input input:focus, select:focus{
     outline: none;
     border-color: #4f005f;
 }

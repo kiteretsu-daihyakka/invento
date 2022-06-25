@@ -18,7 +18,8 @@ const Products = (props) => {
 
   useEffect(() => {
     // let mounted = true;
-    if (props.products == false){
+    console.log('effect cats: ',props.categories);
+    if (props.products == false) {
       fetchProductsHandler();
     }
     // return () => (mounted = false);
@@ -148,6 +149,7 @@ const Products = (props) => {
       {showAddProduct == true && (
         <Modal onClose={onCloseAddProductModal}>
           <AddProduct
+            categories={props.categories}
             onAdd={addProductHandler}
             onClose={onCloseAddProductModal}
           />
@@ -156,7 +158,9 @@ const Products = (props) => {
 
       <div className={classes.products}>
         {showAddProduct == false && (
-          <div className={`${btnClasses.alignRight} ${btnClasses.paddingRight}`}>
+          <div
+            className={`${btnClasses.alignRight} ${btnClasses.paddingRight}`}
+          >
             <Button onClick={addProductButtonHandler}>Add New Product</Button>
           </div>
         )}
@@ -175,6 +179,7 @@ const Products = (props) => {
                 name={productData.name}
                 price={productData.price}
                 category={productData.category}
+                categories={props.categories}
                 onDelete={deleteHandler}
                 onEdit={onEditHandler}
               />
