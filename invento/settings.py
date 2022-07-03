@@ -25,6 +25,8 @@ SECRET_KEY = "os.environ.get('SECRET_KEY')"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+IS_ON_PROD = False
+
 ALLOWED_HOSTS = ['127.0.0.1','invento.pythonanywhere.com']
 # ALLOWED_HOSTS = ['localhost']
 
@@ -92,9 +94,17 @@ WSGI_APPLICATION = 'invento.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
-
-DATABASES = {
-    'default': {
+DATABASES = {}
+if IS_ON_PROD:
+    DATABASES['default'] = {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'Invento$inventodb',
+        'USER': 'Invento',
+        'PASSWORD': 'dbU789789@',
+        'HOST':'Invento.mysql.pythonanywhere-services.com'
+    }
+else:
+    DATABASES['default'] = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'inventodb',
         'USER': 'root',
@@ -102,7 +112,6 @@ DATABASES = {
         'PORT':'3307',
         'HOST':'localhost'
     }
-}
 
 
 # Password validation
@@ -141,7 +150,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
-STATIC_ROOT = '/static/'
+STATIC_ROOT = 'static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field

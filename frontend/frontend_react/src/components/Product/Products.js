@@ -10,14 +10,17 @@ import Modal from "../UI/Modal";
 import NoRecords from "../Helpers/NoRecords";
 import axios from "axios";
 // import MainHeader from "../Header/MainHeader";
+import DeleteProducts from "./DeleteProducts";
 
 const Products = (props) => {
   document.title = "Products";
   const [showAddProduct, setShowAddProduct] = useState(false);
-  let _data;
-  let [isLoading, setIsLoading] = useState(false);
-  const [selectMode, setSelectMode] = useState(true);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  // const [selectMode, setSelectMode] = useState(true);
   const [selected, setSelected] = useState([]);
+
+  let _data;
 
   useEffect(() => {
     // let mounted = true;
@@ -124,11 +127,13 @@ const Products = (props) => {
   function onCloseAddProductModal() {
     setShowAddProduct(false);
   }
-  function deleteHandler(id, name) {
+  function deleteHandler(prods) {
+    let prodsIDs = prods.map((prd) => prd.id);
+    console.log({prodsIDs})
     props.setProducts((prevState) => {
-      return prevState.filter((prod) => prod.id.toString() !== id);
+      return prevState.filter((prod) => !prodsIDs.includes(prod.id));
     });
-    console.log(name + " product deleted.");
+    // console.log(name + " product deleted.");
   }
 
   function onEditHandler(id, name, price, category) {
@@ -144,10 +149,11 @@ const Products = (props) => {
       });
     });
   }
-  function selectModeHandler() {
-    setSelectMode((prevState) => !prevState);
-  }
+  // function selectModeHandler() {
+  //   setSelectMode((prevState) => !prevState);
+  // }
   function selectedList(selectedProd) {
+    console.log({selectedProd});
     setSelected((prevState) => {
       return [...prevState, selectedProd];
     });
@@ -156,6 +162,10 @@ const Products = (props) => {
     setSelected((prevState) => {
       return prevState.filter((prod) => prod.id.toString() !== selectedProd.id);
     });
+  }
+  function deleteSelectedHandler() {
+    console.log({selected});
+    setShowDeleteConfirm(true);
   }
   async function deleteMultiple() {
     let nekota = localStorage.getItem("nekota");
@@ -166,15 +176,13 @@ const Products = (props) => {
     _data = [];
     selected.map((prodDetail) => _data.push(prodDetail.id));
     console.log({ _data });
-    let resp = axios.put(deleteMultiURL,_data,{headers});
+    let resp = axios.put(deleteMultiURL, _data, { headers });
     let json = await resp;
-    console.log({json});
-    props.setProducts(
-      (prevProducts) => {
-        return prevProducts.filter((prod) => !_data.includes(prod.id.toString()));
-      }
-    );
-    setSelected([]);
+    console.log({ json });
+    props.setProducts((prevProducts) => {
+      return prevProducts.filter((prod) => !_data.includes(prod.id.toString()));
+    });
+    // setSelected([]);
   }
   return (
     <Card>
@@ -197,10 +205,10 @@ const Products = (props) => {
           <Button onClick={addProductButtonHandler}>Add New Product</Button>
         </div>
         {/* )} */}
-        <Button onClick={selectModeHandler}>Select</Button>
+        {/* <Button onClick={selectModeHandler}>Select</Button> */}
         {selected.length > 0 && (
           <div className={btnClasses.btnGroup}>
-            <Button type="button" onClick={deleteMultiple}>
+            <Button type="button" onClick={deleteSelectedHandler}>
               Delete Selected
             </Button>
             &nbsp;
@@ -217,7 +225,7 @@ const Products = (props) => {
           <ul>
             {props.products.map((productData) => (
               <Product
-                id={`product${productData.id}`}
+                id={productData.id}
                 key={productData.id}
                 name={productData.name}
                 price={productData.price}
@@ -225,14 +233,22 @@ const Products = (props) => {
                 categories={props.categories}
                 onDelete={deleteHandler}
                 onEdit={onEditHandler}
-                selectMode={selectMode}
+                // selectMode={selectMode}
                 selectedList={selectedList}
                 removeFromSelectedList={removeFromSelectedList}
+                setShowDeleteConfirm={setShowDeleteConfirm}
               />
             ))}
           </ul>
         ) : (
           <NoRecords entityName="Products" />
+        )}
+        {showDeleteConfirm == true && (
+          <DeleteProducts
+            prods={selected}
+            setShowDeleteConfirm={setShowDeleteConfirm}
+            onDelete={deleteHandler}
+          />
         )}
       </div>
     </Card>

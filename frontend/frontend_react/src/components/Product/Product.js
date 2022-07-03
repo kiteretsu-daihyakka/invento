@@ -9,24 +9,15 @@ import Button from "../UI/Button";
 import btnClasses from "../UI/Button.module.css";
 import EditProduct from "./EditProduct";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  solid,
-  regular,
-  brands,
-} from "@fortawesome/fontawesome-svg-core/import.macro";
+import { solid } from "@fortawesome/fontawesome-svg-core/import.macro";
 
 const Product = (props) => {
   const [threeDotMenuVisiblity, setThreeDotMenuVisiblity] = useState(false);
-  const [prodToOperate, setProdToOperate] = useState({});
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [showEditProduct, setShowEditProduct] = useState(false);
 
-  function showThreeDotsMenu(e) {
-    let product_id = e.currentTarget.closest("li[id]");
-    let id = product_id.getAttribute("id").replace("product", "");
-    let name = product_id.childNodes[0].textContent;
-    setProdToOperate({ id, name });
-    console.log("prod to operate: ", prodToOperate.id, prodToOperate.name);
+  const {id,name,price,category,categories} = props;
+  // console.log({ id });
+  function showThreeDotsMenu() {
     setThreeDotMenuVisiblity(true);
   }
   function hideThreeDotsMenu() {
@@ -45,51 +36,33 @@ const Product = (props) => {
   function hideEditProductModal() {
     setShowEditProduct(false);
   }
-  function hideDeleteConfirm() {
-    setShowDeleteConfirm(false);
-  }
+  // function hideDeleteConfirm() {
+  //   setShowDeleteConfirm(false);
+  // }
   function deleteHandler() {
-    console.log("clicked on delete.");
     hideThreeDotsMenu();
-    setShowDeleteConfirm(true);
+    props.selectedList({ id, name });
+    props.setShowDeleteConfirm(true);
   }
-  async function deleteProd() {
-    let id = prodToOperate.id;
-    let name = prodToOperate.name;
-    const headers = {
-      "Content-type": "appliprodion/json; charset=UTF-8",
-      Authorization: props.token,
-    };
-    console.log("id to delete: ", id);
-    let prod_detail_url = product_detail_url.replace("0", id);
-    let response = await axios.delete(prod_detail_url, { id: id }, { headers });
-    console.log("resp after del: ", response);
-    if (response.status == 204) {
-      props.onDelete(id, name);
-    }
-    hideDeleteConfirm();
-  }
-  function markCheck(e){
-    let product_name_id = e.currentTarget.closest('li[id]');
-    let id = product_name_id.getAttribute("id").replace("product", "");
-    let name = product_name_id.childNodes[0].textContent;
-    if(e.target.checked == true){
-      props.selectedList({id,name})
-    }else{
-      props.removeFromSelectedList({id,name})
+
+  function markCheck(e) {
+    if (e.target.checked == true) {
+      props.selectedList({ id, name });
+    } else {
+      props.removeFromSelectedList({ id, name });
     }
   }
   return (
-    <li id={props.id} key={props.id} className={props.className}>
-      {/* {props.name} {props.stock} {props.amount} */}
+    <li id={`product${id}`} key={id} className={props.className}>
+      {/* {name} {props.stock} {props.amount} */}
 
       <span>
-        {props.selectMode == true && (
-          <span>
-            <input type="checkbox" onClick={markCheck}/>
-          </span>
-        )}
-        {props.name} ({props.category}) {parseInt(props.price)} Rs.
+        {/* {props.selectMode == true && ( */}
+        <span>
+          <input type="checkbox" onClick={markCheck} />
+        </span>
+        {/* )} */}
+        {name} ({category}) {parseInt(price)} Rs.
       </span>
       {
         <ThreeDots
@@ -120,30 +93,15 @@ const Product = (props) => {
           </Modal>
         </>
       )}
-      {showDeleteConfirm == true && (
-        <Modal
-          className={modelClasses.confirmationModal}
-          onClose={hideDeleteConfirm}
-        >
-          <p>
-            Delete <strong>{props.name}</strong> product?
-          </p>
-          <div className={btnClasses.btnGroup}>
-            <Button onClick={deleteProd}>Yes</Button>
-            &nbsp;
-            <Button onClick={hideDeleteConfirm}>No</Button>
-          </div>
-        </Modal>
-      )}
       {showEditProduct == true && (
         <EditProduct
           onEdit={onEditHandler}
           onClose={hideEditProductModal}
-          productName={props.name}
-          productID={prodToOperate.id}
-          price={props.price}
-          cat={props.category}
-          categories={props.categories}
+          productName={name}
+          productID={id}
+          price={price}
+          cat={category}
+          categories={categories}
         />
       )}
     </li>

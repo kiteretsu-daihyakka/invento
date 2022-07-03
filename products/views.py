@@ -73,6 +73,6 @@ def deleteMultiProduct(request):
         #     print('prodID to delete:',prodID)
         objsToDel = Product.objects.filter(id__in=request.data)
         objsToDel.delete()
-        return Response(HTTP_200_OK)
+        return Response(status=HTTP_204_NO_CONTENT)
     # elif request.method == 'DELETE':
     #     print('del del:::',request.data)
