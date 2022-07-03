@@ -101,11 +101,11 @@ const Categories = (props) => {
           </ul>
         ) : props.categories.length > 0 ? (
           <Card>
-            {showAddCategory == false && (
+            {/* {showAddCategory == false && ( */}
               <div className={`${btnClasses.alignRight} ${btnClasses.paddingRight}`}>
                 <Button onClick={addCategoryButtonHandler}>Add New Category</Button>
               </div>
-            )}
+            {/* )} */}
             <ul>
               {props.categories.map((categoryData) => (
                 <Category

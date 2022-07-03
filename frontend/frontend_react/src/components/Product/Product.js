@@ -69,11 +69,26 @@ const Product = (props) => {
     }
     hideDeleteConfirm();
   }
+  function markCheck(e){
+    let product_name_id = e.currentTarget.closest('li[id]');
+    let id = product_name_id.getAttribute("id").replace("product", "");
+    let name = product_name_id.childNodes[0].textContent;
+    if(e.target.checked == true){
+      props.selectedList({id,name})
+    }else{
+      props.removeFromSelectedList({id,name})
+    }
+  }
   return (
     <li id={props.id} key={props.id} className={props.className}>
       {/* {props.name} {props.stock} {props.amount} */}
 
       <span>
+        {props.selectMode == true && (
+          <span>
+            <input type="checkbox" onClick={markCheck}/>
+          </span>
+        )}
         {props.name} ({props.category}) {parseInt(props.price)} Rs.
       </span>
       {

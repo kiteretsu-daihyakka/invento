@@ -5,7 +5,6 @@ from .views import *
 
 # app_name = ''
 
-
 urlpatterns = [
     path('', index)
 ]

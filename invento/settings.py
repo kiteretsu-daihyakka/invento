@@ -99,7 +99,7 @@ DATABASES = {
         'NAME': 'inventodb',
         'USER': 'root',
         'PASSWORD': '',
-        'PORT':'3306',
+        'PORT':'3307',
         'HOST':'localhost'
     }
 }

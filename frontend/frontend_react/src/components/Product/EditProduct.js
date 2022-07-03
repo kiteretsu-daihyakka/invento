@@ -86,7 +86,7 @@ const EditProduct = (props) => {
             <option value="-1">Select Category</option>
             {props.categories.map((cat) => {
               if (cat.id == props.cat) {
-                console.log(cat.id,' ',props.cat)
+                // console.log(cat.id,' ',props.cat)
                 return (
                   <option value={cat.id} key={cat.id} selected>
                     {cat.name}

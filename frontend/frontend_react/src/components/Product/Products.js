@@ -8,6 +8,7 @@ import classes from "./Products.module.css";
 import btnClasses from "../UI/Button.module.css";
 import Modal from "../UI/Modal";
 import NoRecords from "../Helpers/NoRecords";
+import axios from "axios";
 // import MainHeader from "../Header/MainHeader";
 
 const Products = (props) => {
@@ -15,10 +16,12 @@ const Products = (props) => {
   const [showAddProduct, setShowAddProduct] = useState(false);
   let _data;
   let [isLoading, setIsLoading] = useState(false);
+  const [selectMode, setSelectMode] = useState(true);
+  const [selected, setSelected] = useState([]);
 
   useEffect(() => {
     // let mounted = true;
-    console.log('effect cats: ',props.categories);
+    console.log("effect cats: ", props.categories);
     if (props.products == false) {
       fetchProductsHandler();
     }
@@ -141,6 +144,38 @@ const Products = (props) => {
       });
     });
   }
+  function selectModeHandler() {
+    setSelectMode((prevState) => !prevState);
+  }
+  function selectedList(selectedProd) {
+    setSelected((prevState) => {
+      return [...prevState, selectedProd];
+    });
+  }
+  function removeFromSelectedList(selectedProd) {
+    setSelected((prevState) => {
+      return prevState.filter((prod) => prod.id.toString() !== selectedProd.id);
+    });
+  }
+  async function deleteMultiple() {
+    let nekota = localStorage.getItem("nekota");
+    const headers = {
+      "Content-type": "application/json; charset=UTF-8",
+      Authorization: nekota,
+    };
+    _data = [];
+    selected.map((prodDetail) => _data.push(prodDetail.id));
+    console.log({ _data });
+    let resp = axios.put(deleteMultiURL,_data,{headers});
+    let json = await resp;
+    console.log({json});
+    props.setProducts(
+      (prevProducts) => {
+        return prevProducts.filter((prod) => !_data.includes(prod.id.toString()));
+      }
+    );
+    setSelected([]);
+  }
   return (
     <Card>
       {/* <MainHeader/> */}
@@ -157,11 +192,19 @@ const Products = (props) => {
       )}
 
       <div className={classes.products}>
-        {showAddProduct == false && (
-          <div
-            className={`${btnClasses.alignRight} ${btnClasses.paddingRight}`}
-          >
-            <Button onClick={addProductButtonHandler}>Add New Product</Button>
+        {/* {showAddProduct == false && ( */}
+        <div className={`${btnClasses.alignRight} ${btnClasses.paddingRight}`}>
+          <Button onClick={addProductButtonHandler}>Add New Product</Button>
+        </div>
+        {/* )} */}
+        <Button onClick={selectModeHandler}>Select</Button>
+        {selected.length > 0 && (
+          <div className={btnClasses.btnGroup}>
+            <Button type="button" onClick={deleteMultiple}>
+              Delete Selected
+            </Button>
+            &nbsp;
+            <Button>Change Category</Button>
           </div>
         )}
         {isLoading == true ? (
@@ -182,6 +225,9 @@ const Products = (props) => {
                 categories={props.categories}
                 onDelete={deleteHandler}
                 onEdit={onEditHandler}
+                selectMode={selectMode}
+                selectedList={selectedList}
+                removeFromSelectedList={removeFromSelectedList}
               />
             ))}
           </ul>

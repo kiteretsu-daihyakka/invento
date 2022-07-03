@@ -47,7 +47,7 @@ const AddProduct = (props) => {
       props.onClose()
     }
   return (
-    <Modal className={classes.input}>
+    <Modal className={classes.input} onClose={props.onClose}>
       <form onSubmit={submitHandler}>
         <label htmlFor="name">Enter Product Name</label>
         <input type="text" id="name" ref={name}/>

@@ -64,3 +64,15 @@ def product_detail(request,pk):
     elif request.method == 'DELETE':
         product.delete()
         return Response(status=HTTP_204_NO_CONTENT)
+    
+@api_view(['PUT','DELETE'])
+def deleteMultiProduct(request):
+    if request.method == 'PUT':
+        print('put del:::',request.data)
+        # for prodID in request.data:
+        #     print('prodID to delete:',prodID)
+        objsToDel = Product.objects.filter(id__in=request.data)
+        objsToDel.delete()
+        return Response(HTTP_200_OK)
+    # elif request.method == 'DELETE':
+    #     print('del del:::',request.data)
