@@ -11,14 +11,15 @@ import NoRecords from "../Helpers/NoRecords";
 import axios from "axios";
 // import MainHeader from "../Header/MainHeader";
 import DeleteProducts from "./DeleteProducts";
+import EditProduct from "./EditProduct";
 
 const Products = (props) => {
   document.title = "Products";
   const [showAddProduct, setShowAddProduct] = useState(false);
+  const [showEditProduct, setShowEditProduct] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  // const [selectMode, setSelectMode] = useState(true);
-  const [selected, setSelected] = useState([]);
+  const [selected, setSelected] = useState(new Set());
 
   let _data;
 
@@ -32,9 +33,6 @@ const Products = (props) => {
   }, []);
 
   function insertProductData() {
-    // console.log(document.getElementsByName('csrfmiddlewaretoken'));
-    // let formData = {..._data,};
-    // console.log('log>>>>',JSON.stringify(_data));
     fetch(products_url, {
       method: "POST",
       body: JSON.stringify(_data),
@@ -64,24 +62,6 @@ const Products = (props) => {
       .catch((err) => console.log(err));
   }
   function fetchProductsHandler() {
-    // const products_url = "https://swapi.dev/api/people/1"
-    // let headers = new Headers();
-    // fetch("http://localhost:8000/products/")
-    // , {
-    //   mode: "cors",
-    //   credentials: "include",
-    //   method: "POST",
-    //   headers: headers,
-    // })
-    // let headers = new Headers();
-
-    // headers.append('Content-Type', 'application/json');
-    // headers.append('Accept', 'application/json');
-    // headers.append('Authorization', 'Basic ' + base64.encode(username + ":" +  password));
-    // headers.append('Origin','http://localhost:3000');
-
-    // headers = {}
-    // props.setProducts([{id:-1,name:'',price:'',category:'Loading...'}])
     setIsLoading(true);
     fetch(products_url, {
       headers: {
@@ -96,17 +76,6 @@ const Products = (props) => {
       })
       .then((data) => {
         console.log("product list data", data);
-        // console.log(data.results)
-        // const transformProducts = data.map((productDetail) => {
-        //   return {
-        //     id: productDetail.id,
-        //     name: productDetail.name,
-        //     price: productDetail.price,
-        //     category: productDetail.category,
-        //   };
-        // });
-        // console.log(transformProducts);
-        // props.setProducts(transformProducts);
         props.setProducts(data);
       })
       .catch((err) => console.log("some errors: ", err));
@@ -114,7 +83,6 @@ const Products = (props) => {
 
   const addProductHandler = (newProduct) => {
     _data = {
-      // id: 1,
       name: newProduct.name,
       price: newProduct.price,
       category: newProduct.category,
@@ -129,14 +97,20 @@ const Products = (props) => {
   }
   function deleteHandler(prods) {
     let prodsIDs = prods.map((prd) => prd.id);
-    console.log({prodsIDs})
+    console.log({ prodsIDs });
     props.setProducts((prevState) => {
       return prevState.filter((prod) => !prodsIDs.includes(prod.id));
     });
     // console.log(name + " product deleted.");
   }
-
+  function showEditProductModal() {
+    setShowEditProduct(true);
+  }
+  function hideEditProductModal() {
+    setShowEditProduct(false);
+  }
   function onEditHandler(id, name, price, category) {
+    hideEditProductModal();
     console.log("new product detail: ", { id, name, price, category });
     props.setProducts((prevState) => {
       return prevState.map((prod) => {
@@ -149,40 +123,20 @@ const Products = (props) => {
       });
     });
   }
-  // function selectModeHandler() {
-  //   setSelectMode((prevState) => !prevState);
-  // }
   function selectedList(selectedProd) {
-    console.log({selectedProd});
+    // console.log({selectedProd});
     setSelected((prevState) => {
       return [...prevState, selectedProd];
     });
   }
-  function removeFromSelectedList(selectedProd) {
+  function removeFromSelectedList(selectedProdID) {
     setSelected((prevState) => {
-      return prevState.filter((prod) => prod.id.toString() !== selectedProd.id);
+      return prevState.filter((prod) => prod.id !== selectedProdID);
     });
   }
   function deleteSelectedHandler() {
-    console.log({selected});
+    console.log({ selected });
     setShowDeleteConfirm(true);
-  }
-  async function deleteMultiple() {
-    let nekota = localStorage.getItem("nekota");
-    const headers = {
-      "Content-type": "application/json; charset=UTF-8",
-      Authorization: nekota,
-    };
-    _data = [];
-    selected.map((prodDetail) => _data.push(prodDetail.id));
-    console.log({ _data });
-    let resp = axios.put(deleteMultiURL, _data, { headers });
-    let json = await resp;
-    console.log({ json });
-    props.setProducts((prevProducts) => {
-      return prevProducts.filter((prod) => !_data.includes(prod.id.toString()));
-    });
-    // setSelected([]);
   }
   return (
     <Card>
@@ -206,13 +160,20 @@ const Products = (props) => {
         </div>
         {/* )} */}
         {/* <Button onClick={selectModeHandler}>Select</Button> */}
-        {selected.length > 0 && (
+
+        {selected.length >= 1 && (
           <div className={btnClasses.btnGroup}>
-            <Button type="button" onClick={deleteSelectedHandler}>
-              Delete Selected
-            </Button>
+            {selected.length == 1 && (
+              <Button type="button" onClick={showEditProductModal}>
+                Edit
+              </Button>
+            )}
             &nbsp;
-            <Button>Change Category</Button>
+            <Button type="button" onClick={deleteSelectedHandler}>
+              Delete
+            </Button>
+            {/* &nbsp;
+            <Button>Change Category</Button> */}
           </div>
         )}
         {isLoading == true ? (
@@ -233,7 +194,6 @@ const Products = (props) => {
                 categories={props.categories}
                 onDelete={deleteHandler}
                 onEdit={onEditHandler}
-                // selectMode={selectMode}
                 selectedList={selectedList}
                 removeFromSelectedList={removeFromSelectedList}
                 setShowDeleteConfirm={setShowDeleteConfirm}
@@ -250,9 +210,19 @@ const Products = (props) => {
             onDelete={deleteHandler}
           />
         )}
+        {showEditProduct == true && (
+          <EditProduct
+            onEdit={onEditHandler}
+            onClose={hideEditProductModal}
+            productName={selected[0].name}
+            productID={selected[0].id}
+            price={selected[0].price}
+            cat={selected[0].category}
+            categories={props.categories}
+          />
+        )}
       </div>
     </Card>
   );
 };
-
 export default Products;

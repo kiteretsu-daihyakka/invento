@@ -12,17 +12,17 @@ const EditProduct = (props) => {
     $("#category-dd").select2();
   }, []);
 
-  let name = useRef();
-  let price = useRef();
-  let category = useRef();
+  const [name,setName] = useState(props.productName);
+  const [price,setPrice] = useState(props.price);
+  const [category,setCategory] = useState(props.cat);
   let nekota = localStorage.getItem("nekota");
 
   const onSaveHandler = (e) => {
     e.preventDefault();
     let new_product = {
-      name: name.current.value.trim(),
-      price: price.current.value.trim(),
-      category: category.current.value,
+      name: name.trim(),
+      price: price.trim(),
+      category: category
     };
     if (new_product.name.length == 0) {
       alert("Please Enter Product Name.");
@@ -66,7 +66,15 @@ const EditProduct = (props) => {
       );
     }
   }
-
+  function onNameChange(e){
+    setName(e.target.value);
+  }
+  function onPriceChange(e){
+    setPrice(e.target.value);
+  }
+  function onCategoryChange(e){
+    setCategory(e.target.value);
+  }
   return (
     <Modal onClose={props.onClose}>
       <div className={classes.input}>
@@ -75,17 +83,17 @@ const EditProduct = (props) => {
           <input
             type="text"
             id="updateName"
-            value={props.productName}
-            ref={name}
+            value={name}
+            onChange={onNameChange}
           />
           <label htmlFor="price">Edit Price</label>
-          <input type="number" id="price" value={props.price} ref={price} />
+          <input type="number" id="price" value={price} onChange={onPriceChange}/>
           <label htmlFor="category">Change Category</label>
           {/* <input type="category" id="category" value={props.cat} ref={category}/> */}
-          <select name="category-dropdown" id="category-dd" ref={category}>
+          <select name="category-dropdown" id="category-dd" onChange={onCategoryChange}>
             <option value="-1">Select Category</option>
             {props.categories.map((cat) => {
-              if (cat.id == props.cat) {
+              if (cat.id == category) {
                 // console.log(cat.id,' ',props.cat)
                 return (
                   <option value={cat.id} key={cat.id} selected>
