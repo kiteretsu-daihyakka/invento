@@ -1,4 +1,4 @@
-import webbrowser as wb
+# import webbrowser as wb
 import pyautogui as auto
 import time
 
