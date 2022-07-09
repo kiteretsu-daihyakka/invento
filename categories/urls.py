@@ -7,5 +7,6 @@ urlpatterns = [
     # path('', category_list, name='categories'),
     path('list/', CategoryList.as_view(), name='categories'),
     path('detail/<int:pk>', CategoryDetail.as_view(), name='category-detail'),
+    path('delete-multi', deleteMulti, name='cat-multi-delete')
     # path('', category_detail, name='category'),
 ]

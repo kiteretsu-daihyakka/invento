@@ -9,16 +9,39 @@ import styles from "./Categories.module.css";
 import NoRecords from "../Helpers/NoRecords";
 import btnClasses from "../UI/Button.module.css";
 import axios from "axios";
-import MainHeader from "../Header/MainHeader";
-import CheckLogin from "../Auth/CheckLogin";
+import DeleteCategories from "./DeleteCategories";
+import EditCategory from "./EditCategory";
 
 const Categories = (props) => {
   document.title = "Categories";
   const [showAddCategory, setShowAddCategory] = useState(false);
-  
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [showEditCategory, setShowEditCategory] = useState(false);
+
   let _data;
   let [isLoading, setIsLoading] = useState(false);
-
+  const [selected, setSelected] = useState(new Set());
+  function selectedList(selected) {
+    // console.log({selectedProd});
+    setSelected((prevState) => {
+      return [...prevState, selected];
+    });
+  }
+  function removeFromSelectedList(selectedID) {
+    setSelected((prevState) => {
+      return prevState.filter((cat) => cat.id !== selectedID);
+    });
+  }
+  function deleteBtnHandler() {
+    console.log("clicked on delete.");
+    setShowDeleteConfirm(true);
+  }
+  function hideDeleteConfirm() {
+    setShowDeleteConfirm(false);
+  }
+  function editBtnHandler() {
+    setShowEditCategory(true);
+  }
   // useEffect(() => {
   //   console.log("categories state: ",props.categories)
   //   // let mounted = true;
@@ -28,11 +51,11 @@ const Categories = (props) => {
   //   // return () => (mounted = false);
   // }, []);
 
-  function fetchCategories() {
-    setIsLoading(true);
-    props.loadCategories();
-    setIsLoading(false);
-  }
+  // function fetchCategories() {
+  //   setIsLoading(true);
+  //   props.loadCategories();
+  //   setIsLoading(false);
+  // }
   async function insertCategory() {
     const headers = {
       "Content-type": "application/json; charset=UTF-8",
@@ -58,11 +81,15 @@ const Categories = (props) => {
       return [_data, ...prevState];
     });
   }
+  function hideEditCategoryModal() {
+    setShowEditCategory(false);
+  }
   function onEditHandler(id, newCategoryName) {
+    hideEditCategoryModal();
     props.setCategories((prevState) => {
       return prevState.map((cat) => {
         if (cat.id.toString() == id) {
-          cat['name']= newCategoryName
+          cat["name"] = newCategoryName;
         }
         return cat;
       });
@@ -73,18 +100,18 @@ const Categories = (props) => {
     setShowAddCategory(true);
   }
 
-  function deleteHandler(id, name) {
+  function deleteHandler(catIDs) {
+    console.log({ catIDs });
     props.setCategories((prevState) => {
-      return prevState.filter((cat) => cat.id.toString() !== id);
+      return prevState.filter((cat) => !catIDs.includes(cat.id));
     });
-    console.log(name + " category deleted.");
   }
   function onCloseAddCategoryModal() {
     setShowAddCategory(false);
   }
+
   return (
     <>
-      {/* <MainHeader/> */}
       {/* <h1>Categories</h1> */}
       {showAddCategory == true && (
         <Modal onClose={onCloseAddCategoryModal}>
@@ -102,10 +129,29 @@ const Categories = (props) => {
         ) : props.categories.length > 0 ? (
           <Card>
             {/* {showAddCategory == false && ( */}
-              <div className={`${btnClasses.alignRight} ${btnClasses.paddingRight}`}>
-                <Button onClick={addCategoryButtonHandler}>Add New Category</Button>
-              </div>
+            <div
+              className={`${btnClasses.alignRight} ${btnClasses.paddingRight}`}
+            >
+              <Button onClick={addCategoryButtonHandler}>
+                Add New Category
+              </Button>
+            </div>
             {/* )} */}
+            {selected.length >= 1 && (
+              <div className={btnClasses.btnGroup}>
+                {selected.length == 1 && (
+                  <Button type="button" onClick={editBtnHandler}>
+                    Edit
+                  </Button>
+                )}
+                &nbsp;
+                <Button type="button" onClick={deleteBtnHandler}>
+                  Delete
+                </Button>
+                {/* &nbsp;
+            <Button>Change Category</Button> */}
+              </div>
+            )}
             <ul>
               {props.categories.map((categoryData) => (
                 <Category
@@ -116,6 +162,8 @@ const Categories = (props) => {
                   onDelete={deleteHandler}
                   onEdit={onEditHandler}
                   token={props.token}
+                  selectedList={selectedList}
+                  removeFromSelectedList={removeFromSelectedList}
                 />
               ))}
             </ul>
@@ -124,6 +172,21 @@ const Categories = (props) => {
           <NoRecords entityName="Categories" />
         )}
       </div>
+      {showEditCategory == true && (
+        <EditCategory
+          onEdit={onEditHandler}
+          onClose={hideEditCategoryModal}
+          categoryName={selected[0].name}
+          categoryID={selected[0].id}
+        />
+      )}
+      {showDeleteConfirm == true && (
+        <DeleteCategories
+          categories={selected}
+          hideDeleteConfirm={hideDeleteConfirm}
+          onDelete={deleteHandler}
+        />
+      )}
     </>
   );
 };

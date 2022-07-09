@@ -29,7 +29,7 @@ const EditCategory = (props) => {
     let response = await axios.put(cat_detail_url, { id, name }, { headers });
     console.log("resp after edit: ", response);
     if (response.status == 200) {
-      props.onEdit(name);
+      props.onEdit(id, name);
     }else{
         console.log("Failed to update category name, please try again after some time..");
     }

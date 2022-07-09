@@ -35,6 +35,7 @@
             const product_detail_url = "{% url 'products:product' 0 %}";
             const products_url = "{% url 'products:products' %}";
             const deleteMultiURL = "{% url 'products:product-multi-delete' %}";
+            const cat_multiDelete = "{% url 'categories:cat-multi-delete' %}";
             const csrfToken = "{{ csrf_token }}";
         </script>
         <script src="{% static 'frontend/main.js' %}?{% now 'U' %}"></script>

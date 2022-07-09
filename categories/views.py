@@ -123,3 +123,16 @@ class CategoryList(APIView):
 #             return Response(serializer.data,status=HTTP_201_CREATED)
 #         else:
 #             return Response(serializer.errors,status=HTTP_400_BAD_REQUEST)
+
+
+@api_view(['PUT','DELETE'])
+def deleteMulti(request):
+    if request.method == 'PUT':
+        print('put del:::',request.data)
+        # for prodID in request.data:
+        #     print('prodID to delete:',prodID)
+        objsToDel = Category.objects.filter(id__in=request.data)
+        objsToDel.delete()
+        return Response(status=HTTP_204_NO_CONTENT)
+    # elif request.method == 'DELETE':
+    #     print('del del:::',request.data)
