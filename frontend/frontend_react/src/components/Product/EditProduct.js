@@ -14,7 +14,9 @@ const EditProduct = (props) => {
 
   const [name,setName] = useState(props.productName);
   const [price,setPrice] = useState(props.price);
-  const [category,setCategory] = useState(props.cat);
+  const category = props.cat;
+  // const [category,setCategory] = useState(props.cat);
+  const categoryRef = useRef();
   let nekota = localStorage.getItem("nekota");
 
   const onSaveHandler = (e) => {
@@ -22,7 +24,7 @@ const EditProduct = (props) => {
     let new_product = {
       name: name.trim(),
       price: price.trim(),
-      category: category
+      category: categoryRef.current.value
     };
     if (new_product.name.length == 0) {
       alert("Please Enter Product Name.");
@@ -72,9 +74,10 @@ const EditProduct = (props) => {
   function onPriceChange(e){
     setPrice(e.target.value);
   }
-  function onCategoryChange(e){
-    setCategory(e.target.value);
-  }
+  // function onCategoryChange(e){
+  //   console.log('cat dd:',e.target.value)
+  //   setCategory(e.target.value);
+  // }
   return (
     <Modal onClose={props.onClose}>
       <div className={classes.input}>
@@ -90,7 +93,7 @@ const EditProduct = (props) => {
           <input type="number" id="price" value={price} onChange={onPriceChange}/>
           <label htmlFor="category">Change Category</label>
           {/* <input type="category" id="category" value={props.cat} ref={category}/> */}
-          <select name="category-dropdown" id="category-dd" onChange={onCategoryChange}>
+          <select name="category-dropdown" id="category-dd" ref={categoryRef}>
             <option value="-1">Select Category</option>
             {props.categories.map((cat) => {
               if (cat.id == category) {
