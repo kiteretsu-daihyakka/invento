@@ -21,3 +21,11 @@
         max-width:none;
     }
 }
+.products .productTable td{
+    border-bottom: 1px solid black;
+    text-align: center;
+}
+.productTable{
+    width: inherit;
+    border-spacing: 0;
+}

@@ -183,23 +183,33 @@ const Products = (props) => {
             </li>
           </ul>
         ) : props.products.length > 0 ? (
-          <ul>
-            {props.products.map((productData) => (
-              <Product
-                id={productData.id}
-                key={productData.id}
-                name={productData.name}
-                price={productData.price}
-                category={productData.category}
-                categories={props.categories}
-                onDelete={deleteHandler}
-                onEdit={onEditHandler}
-                selectedList={selectedList}
-                removeFromSelectedList={removeFromSelectedList}
-                setShowDeleteConfirm={setShowDeleteConfirm}
-              />
-            ))}
-          </ul>
+          <table className={classes.productTable}>
+            <thead>
+              <tr className="heading">
+                <th></th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Category</th>
+              </tr>
+            </thead>
+            <tbody>
+              {props.products.map((productData) => (
+                <Product
+                  id={productData.id}
+                  key={productData.id}
+                  name={productData.name}
+                  price={productData.price}
+                  category={productData.category}
+                  categories={props.categories}
+                  onDelete={deleteHandler}
+                  onEdit={onEditHandler}
+                  selectedList={selectedList}
+                  removeFromSelectedList={removeFromSelectedList}
+                  setShowDeleteConfirm={setShowDeleteConfirm}
+                />
+              ))}
+            </tbody>
+          </table>
         ) : (
           <NoRecords entityName="Products" />
         )}
