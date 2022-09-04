@@ -113,64 +113,58 @@ const Categories = (props) => {
   return (
     <>
       {/* <h1>Categories</h1> */}
-      {showAddCategory == true && (
+      {showAddCategory == true ? (
         <Modal onClose={onCloseAddCategoryModal}>
           <AddCategory onAdd={onAddHandler} onClose={onCloseAddCategoryModal} />
         </Modal>
+      ) : (
+        <div className={`${btnClasses.alignRight} ${btnClasses.paddingRight}`}>
+          <Button onClick={addCategoryButtonHandler}>Add New Category</Button>
+        </div>
       )}
-
       <div className={styles.categories}>
-        {isLoading == true ? (
-          <ul>
-            <li>
-              <h3>Loading...</h3>
-            </li>
-          </ul>
-        ) : props.categories.length > 0 ? (
-          <Card>
-            {/* {showAddCategory == false && ( */}
-            <div
-              className={`${btnClasses.alignRight} ${btnClasses.paddingRight}`}
-            >
-              <Button onClick={addCategoryButtonHandler}>
-                Add New Category
-              </Button>
-            </div>
-            {/* )} */}
-            {selected.length >= 1 && (
-              <div className={btnClasses.btnGroup}>
-                {selected.length == 1 && (
-                  <Button type="button" onClick={editBtnHandler}>
-                    Edit
-                  </Button>
-                )}
-                &nbsp;
-                <Button type="button" onClick={deleteBtnHandler}>
-                  Delete
-                </Button>
-                {/* &nbsp;
-            <Button>Change Category</Button> */}
-              </div>
-            )}
+        <Card>
+          {isLoading == true ? (
             <ul>
-              {props.categories.map((categoryData) => (
-                <Category
-                  id={categoryData.id}
-                  key={categoryData.id}
-                  categoryName={categoryData.name}
-                  className={styles.category}
-                  onDelete={deleteHandler}
-                  onEdit={onEditHandler}
-                  token={props.token}
-                  selectedList={selectedList}
-                  removeFromSelectedList={removeFromSelectedList}
-                />
-              ))}
+              <li>
+                <h3>Loading...</h3>
+              </li>
             </ul>
-          </Card>
-        ) : (
-          <NoRecords entityName="Categories" />
-        )}
+          ) : props.categories.length > 0 ? (
+            <>
+              {selected.length >= 1 && (
+                <div className={btnClasses.btnGroup}>
+                  {selected.length == 1 && (
+                    <Button type="button" onClick={editBtnHandler}>
+                      Edit
+                    </Button>
+                  )}
+                  &nbsp;
+                  <Button type="button" onClick={deleteBtnHandler}>
+                    Delete
+                  </Button>
+                </div>
+              )}
+              <ul>
+                {props.categories.map((categoryData) => (
+                  <Category
+                    id={categoryData.id}
+                    key={categoryData.id}
+                    categoryName={categoryData.name}
+                    className={styles.category}
+                    onDelete={deleteHandler}
+                    onEdit={onEditHandler}
+                    token={props.token}
+                    selectedList={selectedList}
+                    removeFromSelectedList={removeFromSelectedList}
+                  />
+                ))}
+              </ul>
+            </>
+          ) : (
+            <NoRecords entityName="Categories" />
+          )}
+        </Card>
       </div>
       {showEditCategory == true && (
         <EditCategory

@@ -25,7 +25,7 @@ const Login = (props) => {
             // console.log('token after login: ',response.data.token);
             if(response.status == 200){
                 console.log('user logged in!');
-                props.onSuccessfullLogin(true,response.data.token);
+                props.onSuccessfullLogin(true,uname,response.data.token);
             }else{
                 console.log('user could not logged in, some error occured..');
             }

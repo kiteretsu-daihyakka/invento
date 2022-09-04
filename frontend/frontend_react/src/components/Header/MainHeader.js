@@ -2,6 +2,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import classes from "./MainHeader.module.css";
 import Logo from "../UI/Logo";
+import Button from "../UI/Button";
 
 const MainHeader = (props) => {
   return (
@@ -38,6 +39,16 @@ const MainHeader = (props) => {
                 to="/categories/"
               >
                 Categories
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/add-sell/">
+                <Button>New Sell</Button>
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/log-out/">
+                <Button>Log Out</Button>
               </NavLink>
             </li>
           </ul>

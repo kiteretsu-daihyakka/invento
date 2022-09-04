@@ -25,10 +25,19 @@
     outline: none;
     border-color: #4f005f;
 }
+
+.input input[type="radio"]{
+    width: 10%;
+    border: 2px solid black;
+}
 @media (max-width: 580px) {
     .input {
         margin: 0%;
         width: 100%;
         max-width: none;
+    }
+    .input input[type="radio"]{
+        width: 10%;
+        border: 2px solid black;
     }
 }

@@ -12,15 +12,16 @@ import { solid } from "@fortawesome/fontawesome-svg-core/import.macro";
 import prdctClasses from "./Product.module.css";
 
 const Product = (props) => {
-  const { id, name, price, category, categories } = props;
+  const { id, name, price, stock, category, categories } = props;
   console.log("categories: ", categories);
   function markCheck(e) {
     if (e.target.checked == true) {
-      props.selectedList({ id, name, price, category });
+      props.selectedList({ id, name, price, stock, category });
     } else {
       props.removeFromSelectedList(id);
     }
   }
+  
   return (
     <React.Fragment>
       <tr id={`product${id}`} key={id} className={prdctClasses.productRow}>
@@ -33,6 +34,7 @@ const Product = (props) => {
         {/* )} */}
         <td className={prdctClasses.productdetail}>{name}</td>
         <td className={prdctClasses.productdetail}>{parseInt(price)} Rs.</td>
+        <td className={prdctClasses.productdetail}>{stock}</td>
         <td className={prdctClasses.productdetail}>
           {categories.map((cat) => {
             if (cat.id == category) {

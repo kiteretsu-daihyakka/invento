@@ -44,6 +44,11 @@
     width:100%;
 }}
 
+.btnAlone{
+    margin: auto;
+    display: grid;
+    width: 30%;
+}
 /* .disabled{
     
 } */

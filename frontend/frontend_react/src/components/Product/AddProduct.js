@@ -19,12 +19,14 @@ const AddProduct = (props) => {
 
     let name = useRef()
     let price = useRef()
+    let stock = useRef()
     let category = useRef()
     const submitHandler = (e) => {
         e.preventDefault();
         let new_product = {
           'name':name.current.value.trim(),
           'price':price.current.value.trim(),
+          'stock':stock.current.value.trim(),
           'category':category.current.value
         }
         if(new_product.name.length == 0){
@@ -37,6 +39,10 @@ const AddProduct = (props) => {
         }
         if(new_product.category == -1){
           alert('Please Select Product Category.')
+          return
+        }
+        if(new_product.stock.length == 0){
+          alert('Please Enter Product Stock.')
           return
         }
         console.log({new_product})
@@ -53,6 +59,8 @@ const AddProduct = (props) => {
         <input type="text" id="name" ref={name}/>
         <label htmlFor="price">Enter Price</label>
         <input type="number" id="price" ref={price}/>
+        <label htmlFor="stock">Enter Stock</label>
+        <input type="number" id="stock" defaultValue="0" ref={stock}/>
         <label htmlFor="category">Select Category</label>
         {/* <input type="category" id="category" value={category} onChange={categoryChangeHandler}/> */}
         <select name="category-dropdown" id="category-dd" ref={category}>

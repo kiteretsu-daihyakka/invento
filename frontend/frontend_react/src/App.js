@@ -9,6 +9,9 @@ import CheckLogin from "./components/Auth/CheckLogin";
 import Login from "./components/Auth/Login";
 import SignUp from "./components/Auth/SignUp";
 import NotFound from "./components/Helpers/NotFound";
+import InvoiceMode from "./components/Sell/InvoiceMode";
+import axios from "axios";
+import LogOut from "./components/Auth/LogOut";
 
 function App() {
   let navigate = useNavigate();
@@ -17,11 +20,13 @@ function App() {
     localStorage.getItem("logStat") === "true"
   );
   const [authToken, setAuthToken] = useState(localStorage.getItem("nekota"));
+  const [username, setUsername] = useState(localStorage.getItem("uname"));
   const [categories, setCategories] = useState(false);
   const [products, setProducts] = useState(false);
     
-  function onLoginCheck(result, token) {
+  function onLoginCheck(result, uname, token) {
     setLoggedInStatus(result);
+    setUsername(uname);
     setAuthToken(token);
     if (result == true) {
       setTimeout(() => {
@@ -30,31 +35,28 @@ function App() {
     }
   }
   async function loadCategories(){
-    await fetch(categories_url, {
+    let cat_data = await axios.get(categories_url, {
       headers: {
         "Content-type": "application/json; charset=UTF-8",
         Authorization: "Token " + localStorage.getItem("nekota"),
       },
     })
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        console.log("categories>>>", data);
-        setCategories(data);
-      });
+    setCategories(cat_data.data);
+    console.log("categories>>>", cat_data);
   }
 
   useEffect(() => {
     localStorage.setItem("logStat", loginStatus);
     localStorage.setItem("nekota", authToken);
-    console.log('running effect app')
+    localStorage.setItem("uname", username);
+    // localStorage.setItem("username", userName);
     loadCategories();
+    console.log('running effect app')
   }, [loginStatus, authToken]);
 
   return (
     <React.Fragment>
-      <MainHeader loginStatus={loginStatus} />
+      <MainHeader loginStatus={loginStatus}/>
       <Routes>
         <Route
           path=""
@@ -68,10 +70,12 @@ function App() {
           path="signup"
           element={<SignUp onSuccessfullSignedIn={onLoginCheck} />}
         />
-        <Route path="home" element={<Home loginStatus={loginStatus} />} />
+        <Route path="home" element={<Home loginStatus={loginStatus}  uname={username}/>} />
         <Route path="products" excat element={<Products products={products} setProducts={setProducts} categories={categories}/>} />
         <Route path="categories" excat element={<Categories categories={categories} setCategories={setCategories} loadCategories={loadCategories}/>} />
+        <Route path="log-out" excat element={<LogOut onLogOut={onLoginCheck}/>} />
         <Route path="*" element={<NotFound />} />
+        <Route path="add-sell" element={<InvoiceMode />} />
       </Routes>
     </React.Fragment>
   );

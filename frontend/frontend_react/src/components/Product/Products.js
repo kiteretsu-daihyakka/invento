@@ -85,6 +85,7 @@ const Products = (props) => {
     _data = {
       name: newProduct.name,
       price: newProduct.price,
+      stock: newProduct.stock,
       category: newProduct.category,
     };
     insertProductData();
@@ -109,19 +110,23 @@ const Products = (props) => {
   function hideEditProductModal() {
     setShowEditProduct(false);
   }
-  function onEditHandler(id, name, price, category) {
+  function onEditHandler(editedProd) {
     hideEditProductModal();
-    console.log("new product detail: ", { id, name, price, category });
+    // let { id, name, price, category } = editedProd;
+    console.log({ editedProd });
     props.setProducts((prevState) => {
       return prevState.map((prod) => {
-        if (prod.id.toString() == id) {
-          prod["name"] = name;
-          prod["price"] = price;
-          prod["category"] = category;
+        if (prod.id.toString() == editedProd.id.toString()) {
+          prod["name"] = editedProd.name;
+          prod["price"] = editedProd.price;
+          prod["stock"] = editedProd.stock;
+          console.log("updated stock and details: ", editedProd.stock);
+          prod["category"] = editedProd.category;
         }
         return prod;
       });
     });
+    setSelected(new Set());
   }
   function selectedList(selectedProd) {
     // console.log({selectedProd});
@@ -139,7 +144,7 @@ const Products = (props) => {
     setShowDeleteConfirm(true);
   }
   return (
-    <Card>
+    <>
       {/* <MainHeader/> */}
       {/* <h2>Products</h2> */}
       {/* <Button onClick={fetchProductsHandler}>Fetch Products</Button> */}
@@ -160,59 +165,62 @@ const Products = (props) => {
         </div>
         {/* )} */}
         {/* <Button onClick={selectModeHandler}>Select</Button> */}
-
-        {selected.length >= 1 && (
-          <div className={btnClasses.btnGroup}>
-            {selected.length == 1 && (
-              <Button type="button" onClick={showEditProductModal}>
-                Edit
+        <Card>
+          {selected.length >= 1 && (
+            <div className={btnClasses.btnGroup}>
+              {selected.length == 1 && (
+                <Button type="button" onClick={showEditProductModal}>
+                  Edit
+                </Button>
+              )}
+              &nbsp;
+              <Button type="button" onClick={deleteSelectedHandler}>
+                Delete
               </Button>
-            )}
-            &nbsp;
-            <Button type="button" onClick={deleteSelectedHandler}>
-              Delete
-            </Button>
-            {/* &nbsp;
+              {/* &nbsp;
             <Button>Change Category</Button> */}
-          </div>
-        )}
-        {isLoading == true ? (
-          <ul>
-            <li>
-              <h3>Loading...</h3>
-            </li>
-          </ul>
-        ) : props.products.length > 0 ? (
-          <table className={classes.productTable}>
-            <thead>
-              <tr className="heading">
-                <th></th>
-                <th>Name</th>
-                <th>Price</th>
-                <th>Category</th>
-              </tr>
-            </thead>
-            <tbody>
-              {props.products.map((productData) => (
-                <Product
-                  id={productData.id}
-                  key={productData.id}
-                  name={productData.name}
-                  price={productData.price}
-                  category={productData.category}
-                  categories={props.categories}
-                  onDelete={deleteHandler}
-                  onEdit={onEditHandler}
-                  selectedList={selectedList}
-                  removeFromSelectedList={removeFromSelectedList}
-                  setShowDeleteConfirm={setShowDeleteConfirm}
-                />
-              ))}
-            </tbody>
-          </table>
-        ) : (
-          <NoRecords entityName="Products" />
-        )}
+            </div>
+          )}
+          {isLoading == true ? (
+            <ul>
+              <li>
+                <h3>Loading...</h3>
+              </li>
+            </ul>
+          ) : props.products.length > 0 ? (
+            <table className={classes.productTable}>
+              <thead>
+                <tr className="heading">
+                  <th></th>
+                  <th>Name</th>
+                  <th>Price</th>
+                  <th>Stock</th>
+                  <th>Category</th>
+                </tr>
+              </thead>
+              <tbody>
+                {props.products.map((productData) => (
+                  <Product
+                    id={productData.id}
+                    key={productData.id}
+                    name={productData.name}
+                    price={productData.price}
+                    stock={productData.stock}
+                    category={productData.category}
+                    categories={props.categories}
+                    onDelete={deleteHandler}
+                    onEdit={onEditHandler}
+                    selectedList={selectedList}
+                    removeFromSelectedList={removeFromSelectedList}
+                    setShowDeleteConfirm={setShowDeleteConfirm}
+                  />
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <NoRecords entityName="Products" />
+          )}
+        </Card>
         {showDeleteConfirm == true && (
           <DeleteProducts
             prods={selected}
@@ -227,12 +235,13 @@ const Products = (props) => {
             productName={selected[0].name}
             productID={selected[0].id}
             price={selected[0].price}
+            stock={selected[0].stock}
             cat={selected[0].category}
             categories={props.categories}
           />
         )}
       </div>
-    </Card>
+    </>
   );
 };
 export default Products;

@@ -7,6 +7,8 @@ from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_400_BAD_RE
 from rest_framework.decorators import api_view
 from rest_framework import generics
 from rest_framework.authtoken.models import Token
+import cv2
+import numpy as np
 
 # class ProductList(generics.ListCreateAPIView):
 #     queryset = Product.objects.all().order_by('-id')
@@ -76,3 +78,22 @@ def deleteMultiProduct(request):
         return Response(status=HTTP_204_NO_CONTENT)
     # elif request.method == 'DELETE':
     #     print('del del:::',request.data)
+
+@api_view(['POST','PUT'])
+def add_auto_sell(request):
+    if request.method == 'PUT':
+        print('image data: ', request.data['image'].file)
+        # img = cv2.imread(request.data['image'].file)
+        np_arr_img = np.asarray(np.frombuffer(request.data['image'].file.read() , np.uint8))
+        print(type(np_arr_img))
+        # img = cv2.(np_arr_img, cv2.IMREAD_UNCHANGED)
+        # print(type(img))
+        cv2.imshow('Misa',np_arr_img)
+        
+        # serializer = ProductSerializer(data=request.data)
+        # if serializer.is_valid():
+        #     serializer.save()
+        #     return Response(serializer.data,status=HTTP_201_CREATED)
+        # else:
+        #     return Response(serializer.errors,status=HTTP_400_BAD_REQUEST)
+    return Response(status=HTTP_200_OK)

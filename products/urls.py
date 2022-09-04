@@ -6,5 +6,6 @@ app_name = 'products'
 urlpatterns = [
     path('', product_list, name='products'),
     path('<int:pk>', product_detail, name='product'),
-    path('delete-multi', deleteMultiProduct, name='product-multi-delete')
+    path('delete-multi', deleteMultiProduct, name='product-multi-delete'),
+    path('add-auto-sell', add_auto_sell, name='add-auto-sell'),
 ]
