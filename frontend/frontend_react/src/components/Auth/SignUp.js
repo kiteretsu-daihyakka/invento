@@ -39,7 +39,7 @@ const SignUp = (props) => {
       console.log("response: ", response);
       if (response.status == 201) {
         console.log("user signed in!");
-        props.onSuccessfullSignedIn(true,response.data.token);
+        props.onSuccessfullSignedIn(true,uname,response.data.token);
       } else {
         console.log("user could not signed in, some error occured..");
         props.onSuccessfullSignedIn(false);

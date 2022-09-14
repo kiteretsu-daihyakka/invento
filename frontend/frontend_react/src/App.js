@@ -12,6 +12,7 @@ import NotFound from "./components/Helpers/NotFound";
 import InvoiceMode from "./components/Sell/InvoiceMode";
 import axios from "axios";
 import LogOut from "./components/Auth/LogOut";
+import InvoiceForm from "./components/Sell/InvoiceForm";
 
 function App() {
   let navigate = useNavigate();
@@ -22,7 +23,7 @@ function App() {
   const [authToken, setAuthToken] = useState(localStorage.getItem("nekota"));
   const [username, setUsername] = useState(localStorage.getItem("uname"));
   const [categories, setCategories] = useState(false);
-  const [products, setProducts] = useState(false);
+  const [products, setProducts] = useState([]);
     
   function onLoginCheck(result, uname, token) {
     setLoggedInStatus(result);
@@ -35,6 +36,7 @@ function App() {
     }
   }
   async function loadCategories(){
+    //categories
     let cat_data = await axios.get(categories_url, {
       headers: {
         "Content-type": "application/json; charset=UTF-8",
@@ -43,6 +45,16 @@ function App() {
     })
     setCategories(cat_data.data);
     console.log("categories>>>", cat_data);
+    
+    //products
+    let prods_data = await axios.get(products_url, {
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+        Authorization: "Token " + localStorage.getItem("nekota"),
+      },
+    })
+    setProducts(prods_data.data);
+    console.log("product list data", prods_data);
   }
 
   useEffect(() => {
@@ -74,8 +86,9 @@ function App() {
         <Route path="products" excat element={<Products products={products} setProducts={setProducts} categories={categories}/>} />
         <Route path="categories" excat element={<Categories categories={categories} setCategories={setCategories} loadCategories={loadCategories}/>} />
         <Route path="log-out" excat element={<LogOut onLogOut={onLoginCheck}/>} />
-        <Route path="*" element={<NotFound />} />
         <Route path="add-sell" element={<InvoiceMode />} />
+        <Route path="order-summary" excat element={<InvoiceForm products={products}/>} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </React.Fragment>
   );

@@ -5,7 +5,7 @@ import Modal from "../UI/Modal";
 import classes from '../UI/input.module.css'
 import addClasses from './AddProduct.module.css'
 import btnClasses from '../UI/Button.module.css'
-import { useState,useRef,useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 // import addProductAPI from './apis.js'
 
 const AddProduct = (props) => {

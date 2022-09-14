@@ -10,7 +10,7 @@ const NotFound = () => {
   return (
     <>
       <TitleBig className={classes.whity}>404 - URL Not Found!</TitleBig>
-      <Link to="/" className={btnClasses.btnAlone}>
+      <Link to="/home" className={btnClasses.btnAlone}>
         <Button>Go Home</Button>
       </Link>
     </>

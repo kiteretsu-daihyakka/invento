@@ -27,7 +27,9 @@ const Products = (props) => {
     // let mounted = true;
     console.log("effect cats: ", props.categories);
     if (props.products == false) {
-      fetchProductsHandler();
+      // fetchProductsHandler();
+      console.log('coming in product false!')
+      return;
     }
     // return () => (mounted = false);
   }, []);
