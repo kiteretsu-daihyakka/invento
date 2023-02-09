@@ -33,14 +33,20 @@ const InvoiceForm = (props) => {
   function onAddNewHandler() {
     setInvoiceItems((prevState) => {
       let new_SR_No = prevState[prevState.length - 1]["SR_No"] + 1;
-      prevState.push({
+      // prevState.push({
+      //   SR_No: new_SR_No,
+      //   productID: -1,
+      //   price: "",
+      //   quantity: "",
+      // });
+      return [...prevState, {
         SR_No: new_SR_No,
         productID: -1,
         price: "",
         quantity: "",
-      });
+      }]
       // console.log({ prevState });
-      return prevState;
+      // return prevState;
     });
   }
   const onItemChange = (e, propertyChange) => {

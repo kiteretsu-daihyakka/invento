@@ -17,3 +17,5 @@ class Product(models.Model):
         return reverse("Product_detail", kwargs={"pk": self.pk})
 
 
+class Sell(models.Model):
+    purchase_img = models.FileField(upload_to="static/images", max_length=100)

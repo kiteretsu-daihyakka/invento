@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Product
+from .models import Product, Sell
 from .serializers import ProductSerializer
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP_204_NO_CONTENT
@@ -82,13 +82,15 @@ def deleteMultiProduct(request):
 @api_view(['POST','PUT'])
 def add_auto_sell(request):
     if request.method == 'PUT':
-        print('image data: ', request.data['image'].file)
+        img = request.data['image'].file
+        print('image data: ', img)
         # img = cv2.imread(request.data['image'].file)
         np_arr_img = np.asarray(np.frombuffer(request.data['image'].file.read() , np.uint8))
         print(type(np_arr_img))
+        Sell(purchase_img=img).save()
         # img = cv2.(np_arr_img, cv2.IMREAD_UNCHANGED)
         # print(type(img))
-        cv2.imshow('Misa',np_arr_img)
+        #cv2.imshow('Misa',np_arr_img)
         
         # serializer = ProductSerializer(data=request.data)
         # if serializer.is_valid():

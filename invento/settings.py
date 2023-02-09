@@ -25,7 +25,7 @@ SECRET_KEY = "os.environ.get('SECRET_KEY')"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-IS_ON_PROD = False
+IS_ON_PROD = True
 ALLOWED_HOSTS = ['192.168.217.60', '192.168.0.101', '127.0.0.1', 'invento.pythonanywhere.com']
 # ALLOWED_HOSTS = ['localhost']
 

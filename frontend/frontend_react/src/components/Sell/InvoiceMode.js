@@ -48,7 +48,7 @@ const InvoiceMode = () => {
       // to select image
       document.getElementById("fileUploaded").click();
     }
-    navigate('/order-summary/');
+    // navigate('/order-summary/');
   }
   function onImageSelectHandler(e) {
     if (e.target.value.length > 0) {

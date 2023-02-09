@@ -26,7 +26,7 @@ SECRET_KEY = "os.environ.get('SECRET_KEY')"
 DEBUG = True
 
 IS_ON_PROD = True
-ALLOWED_HOSTS = ['127.0.0.1','invento.pythonanywhere.com']
+ALLOWED_HOSTS = ['192.168.217.60', '192.168.0.101', '127.0.0.1', 'invento.pythonanywhere.com']
 # ALLOWED_HOSTS = ['localhost']
 
 
@@ -109,7 +109,7 @@ else:
         'USER': 'root',
         'PASSWORD': '',
         'PORT':'3307',
-        'HOST':'localhost'
+        'HOST':'127.0.0.1'
     }
 
 
